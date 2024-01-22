@@ -7,6 +7,17 @@
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"features": {
 		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.black-formatter",
+				"ms-python.vscode-pylance",
+				"ms-python.python",
+				"ms-python.flake8",
+				"ms-python.isort"
+			]
+		}
 	}
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
