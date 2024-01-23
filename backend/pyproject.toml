@@ -7,8 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-django = "^5.0.1"
+django = "^4.2.0"
 djangorestframework = "^3.14.0"
+django-storages = "^1.14.2"
 
 
 [tool.poetry.group.dev.dependencies]
