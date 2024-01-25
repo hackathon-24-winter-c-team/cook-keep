@@ -10,6 +10,7 @@ python = "^3.11"
 django = "^4.2.0"
 djangorestframework = "^3.14.0"
 django-storages = "^1.14.2"
+psycopg2 = "^2.9.9"
 
 
 [tool.poetry.group.dev.dependencies]
