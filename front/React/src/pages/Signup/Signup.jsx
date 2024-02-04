@@ -28,7 +28,7 @@ export const Signup = () => {
         // エラーがない場合、登録成功のアラートを表示し、リダイレクトを実行
         if (Object.keys(errors).length === 0) {
             alert("登録に成功しました")
-            handleRecipeListRedirect();  // レシピ一覧ページへのリダイレクト         
+            navigate('/recipes');  // レシピ一覧ページへのリダイレクト         
         }
     };
 
@@ -56,11 +56,6 @@ export const Signup = () => {
         return errors;
     }
 
-    // レシピ一覧ページへのリダイレクトを処理する関数
-    const handleRecipeListRedirect = () => {
-        navigate('/recipes')
-    }
-
     return (
         <div className={styles.formContainer}>
             <form onSubmit={(e) => handleSubmit(e)}>
@@ -79,7 +74,6 @@ export const Signup = () => {
                         <TextField id="standard-basic" label="パスワード" variant="standard" name="password" onChange={(e) => handleChange(e)}/>
                     </div>
                     <p className={styles.errorMsg}>{formErrors.password}</p>
-                    {/* <Button variant="contained" color="success" type='submit'>ログイン</Button> */}
                     <Button type='submit' variant="contained">登録する</Button>
                     {Object.keys(formErrors).length === 0 && isSubmit && (
                         <div className={styles.msgOk}>登録に成功しました</div>

@@ -22,8 +22,13 @@ export const Login = () => {
     // フォームが送信された時に呼び出される関数
     const handleSubmit = (e) => {
         e.preventDefault();  // デフォルトの送信動作を防止
-        setFormErrors(validate(formValues)); // バリデーションを実行し、エラーを設定
+        const errors = validate(formValues);
+        setFormErrors(errors); 
         setIsSubmit(true) // 送信状態をtrueに設定
+        //エラーがなければレシピ一覧ページへリダイレクト
+        if (Object.keys(errors).length === 0) {
+            navigate('/recipes')
+        }
     };
 
     // フォームの値を検証し、エラーがあればそれを返す関数
@@ -37,7 +42,7 @@ export const Login = () => {
         } else if (!regex.test(values.mailAddress)) {
             errors.mailAddress = "正しいメールアドレスを入力してください";
         }
-        if(!values.username) {
+        if(!values.password) {
             errors.password = "パスワードを入力してください";
         } else if (values.password.length < 4) {
             errors.password = "4文字以上15文字以下のパスワードを入力してください"
