@@ -1,0 +1,27 @@
+
+.header { 
+    list-style: none;
+    padding: 0px;
+}
+
+.header ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header li {
+    margin-left: 0%;
+}
+
+.userIcon {
+    list-style: none;
+}
+
+.searchBar {
+    list-style: none;
+ }
+
+ .logoutIcon {
+    list-style: none;
+ }
+
