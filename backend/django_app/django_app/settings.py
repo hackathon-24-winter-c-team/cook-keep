@@ -31,13 +31,31 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "accounts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "rest_framework.authtoken",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+# なおゆきコメント：認証トークンの単体テスト（ブラウザ）用に追加
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -125,3 +143,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# なおゆきコメント：サーバー起動時のエラー表示回避のため、リダイレクトを仮で指定
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "rest_framework:login"
