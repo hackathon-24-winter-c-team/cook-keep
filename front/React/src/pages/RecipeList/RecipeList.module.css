@@ -1,0 +1,20 @@
+
+.header { 
+    list-style: none;
+    padding: 0px;
+}
+
+.header ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header li {
+    margin-left: 0%;
+}
+
+.newRecipeIcon {
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
+}
