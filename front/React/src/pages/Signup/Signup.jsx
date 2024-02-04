@@ -64,7 +64,8 @@ export const Signup = () => {
     return (
         <div className={styles.formContainer}>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <h1>サインアップフォーム</h1>
+                <img src="/topicon2.png" alt="cook keep logo" className={styles.logo}/>
+                <h1>サインアップ</h1>
                 <div className={styles.uiForm}>
                     <div className={styles.formField}>
                         <TextField id="standard-basic" label="名前" variant="standard" name="username" onChange={(e) => handleChange(e)}/>

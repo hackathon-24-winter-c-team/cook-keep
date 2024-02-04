@@ -5,8 +5,9 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 
+
 export const Login = () => {
-    const initialValues = {username: "", mailAddress: "", password: "" } // フォームの初期値を設定
+    const initialValues = {mailAddress: "", password: "" } // フォームの初期値を設定
     const [formValues, setFormValues] = useState(initialValues) // フォームの値の状態
     const [formErrors, setFormErrors] = useState({}) // フォームのエラーの状態
     const [isSubmit, setIsSubmit] = useState(false) // 送信状態
@@ -31,9 +32,6 @@ export const Login = () => {
         const regex = 
             /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 
-        if(!values.username) {
-            errors.username = "ユーザー名を入力してください";
-        }
         if(!values.mailAddress) {
             errors.mailAddress = "メールアドレスを入力してください";
         } else if (!regex.test(values.mailAddress)) {
@@ -57,12 +55,9 @@ export const Login = () => {
     return (
         <div className={styles.formContainer}>
             <form onSubmit={(e) => handleSubmit(e)}>
+                <img src="/topicon2.png" alt="cook keep logo" className={styles.logo}/>
                 <h1>ログインフォーム</h1>
                 <div className={styles.uiForm}>
-                    <div className={styles.formField}>
-                        <TextField id="standard-basic" label="名前" variant="standard" name="username" onChange={(e) => handleChange(e)}/>
-                    </div>
-                    <p className={styles.errorMsg}>{formErrors.username}</p>
                     <div className={styles.formField}>
                         <TextField id="standard-basic" label="メールアドレス" variant="standard" name="mailAddress" onChange={(e) => handleChange(e)}/>
                     </div>
@@ -75,7 +70,6 @@ export const Login = () => {
                     {Object.keys(formErrors).length === 0 && isSubmit && (
                         <div className={styles.msgOk}>ログインに成功しました</div>
                     )}
-                    {/* <a id="pointer" onClick={handleSignupRedirect}>新規登録はこちら</a> */}
                     <Button variant="contained" onClick={handleSignupRedirect}>新規登録</Button>
                 </div>
             </form>
