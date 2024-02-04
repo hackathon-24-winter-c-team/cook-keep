@@ -13,15 +13,8 @@
     margin-left: 0%;
 }
 
-.userIcon {
-    list-style: none;
+.newRecipeIcon {
+    position: fixed;
+    bottom: 10%;
+    right: 10%;
 }
-
-.searchBar {
-    list-style: none;
- }
-
- .logoutIcon {
-    list-style: none;
- }
-
