@@ -43,6 +43,21 @@ INSTALLED_APPS = [
     "api",
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+# なおゆきコメント：認証トークンの単体テスト（ブラウザ）用に追加
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ),
+}
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -130,10 +145,13 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# なおゆきコメント：サーバー起動時のエラー表示回避のため、リダイレクトを仮で指定
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "rest_framework:login"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
     ],
 }
 
-AUTH_USER_MODEL = "accounts.User"
+AUTH_USER_MODEL = "accounts.User
