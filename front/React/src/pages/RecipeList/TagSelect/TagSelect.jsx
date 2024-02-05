@@ -6,25 +6,30 @@ import Select from '@mui/material/Select';
 import styles from './TagSelect.module.css'
 
 export const TagSelect = () => {
+  // 各カテゴリの選択された値を管理するステート
   const [main, setMain] = React.useState('');
   const [genre, setGenre] = React.useState('');
   const [jitan, setJitan] = React.useState('');
 
+  // 'メイン' カテゴリの選択値を更新する関数
   const handleMainChange = (event) => {
     setMain(event.target.value);
   };
 
+  // 'ジャンル' カテゴリの選択値を更新する関数
   const handliGenreChange = (event) => {
     setGenre(event.target.value)
   }
 
+  // '時短' カテゴリの選択値を更新する関数
   const handleJitanChange = (event) => {
     setJitan(event.target.value)
   }
 
   return (
     <div className={styles.taglist}>
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      {/* 'メイン' カテゴリのセレクトメニュー */}
+    <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
       <InputLabel id="main-select-label">メイン</InputLabel>
       <Select
         labelId="main-select-label"
@@ -44,7 +49,9 @@ export const TagSelect = () => {
         <MenuItem value={'dessert'}>デザート</MenuItem>
       </Select>
     </FormControl>
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    
+        {/* 'ジャンル' カテゴリのセレクトメニュー */}
+        <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
         <InputLabel id="genre-select-label">ジャンル</InputLabel>
         <Select
           labelId="genre-select-label"
@@ -62,8 +69,10 @@ export const TagSelect = () => {
           <MenuItem value={'other'}>その他</MenuItem>
         </Select>
       </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-      <InputLabel id="jitan-select-label">時短</InputLabel>
+
+      {/* '時短' カテゴリのセレクトメニュー */}
+      <FormControl sx={{ m: 1, minWidth: 100 }} size="small">
+      <InputLabel id="jitan-select-label">時間</InputLabel>
       <Select
         labelId="jitan-select-label"
         id="jitan-select"
