@@ -13,8 +13,34 @@
     margin-left: 0%;
 }
 
+.userIcon {
+    cursor: pointer;
+}
+.userIcon:hover {
+    color: black;
+    transition: .4s;
+}
+
+.logoutIcon {
+    cursor: pointer;
+}
+.logoutIcon:hover {
+    color: black;
+    transition: .4s;
+}
+
 .newRecipeIcon {
     position: fixed;
     bottom: 10%;
+    right: 10%;
+    cursor: pointer;
+}
+.newRecipeIcon:hover {
+    color: aqua;
+    transition: .4s;
+}
+
+.editIcon {
+    position: fixed;
     right: 10%;
 }
