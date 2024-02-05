@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "accounts",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -40,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "accounts",
+    "api",
 ]
 
 REST_FRAMEWORK = {
@@ -147,3 +148,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # なおゆきコメント：サーバー起動時のエラー表示回避のため、リダイレクトを仮で指定
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "rest_framework:login"
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+}
+
+AUTH_USER_MODEL = "accounts.User
