@@ -18,14 +18,14 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, password):
-        user = User(email=BaseUserManager.normalize_email(email))
+    def create_user(self, email, username, password):
+        user = User(email=BaseUserManager.normalize_email(email), username=username)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
-        u = self.create_user(email=email, password=password)
+    def create_superuser(self, email, username, password):
+        u = self.create_user(email=email, username=username, password=password)
         u.is_staff = True
         u.is_superuser = True
         u.save(using=self._db)
@@ -33,13 +33,14 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(unique=True, max_length=128)
     email = models.EmailField(unique=True, blank=False)
     password = models.CharField(_("password"), max_length=128)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
     EMAIL_FIELD = "email"
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
+    USERNAME_FIELD = "username"
+    REQUIRED_FIELDS = ["email"]
 
     objects = UserManager()
