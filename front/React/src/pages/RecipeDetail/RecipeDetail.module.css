@@ -19,7 +19,7 @@
     text-align: center;
     color: black;
     font-size: small;
-    padding: 4px;
+    padding: 0, 4, 4, 4px;
 }
 
 .CancelIcon {
@@ -31,8 +31,7 @@
 .recipeIcon {
     display: flex;
     justify-content:space-around;
-    margin: 10px 10px;
-    padding: px;
+    margin: 0px 40px;
 }
 
 .url {
@@ -86,5 +85,14 @@
 
 .memo {
     text-align: center;
-    padding: 20px;
+    padding: 10px
 }
+
+.saveButton {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+
+  

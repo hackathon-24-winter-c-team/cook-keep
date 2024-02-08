@@ -8,6 +8,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import { Button as BaseButton } from '@mui/base/Button';
+import { styled } from '@mui/system';
 
 export const RecipeDetail = () => {
 
@@ -35,6 +37,7 @@ export const RecipeDetail = () => {
                 <TextField id='recipeId' placeholder='レシピ名'/>
             </div>
             <div className={styles.tagGroup}>
+            <FormControl >
                 <FormLabel id="mainTagGroup">メイン :</FormLabel>
                 <RadioGroup
                     row
@@ -70,6 +73,7 @@ export const RecipeDetail = () => {
                     <FormControlLabel value="jitan" control={<Radio />} label="時短" />
                     <FormControlLabel value="" control={<Radio />} label="指定なし" />
                 </RadioGroup>
+            </FormControl>
             </div>
             <div className={styles.imageUrl}>
                 <p>画像のurlを表示</p>
@@ -83,6 +87,51 @@ export const RecipeDetail = () => {
                     defaultValue=""
                 />
             </div>
+            <div className={styles.saveButton}>
+                <Button >保存</Button>
+            </div>
         </div>
     )
 }
+
+const blue = {
+    200: '#99CCFF',
+    300: '#66B2FF',
+    400: '#3399FF',
+    500: '#007FFF',
+    600: '#0072E5',
+    700: '#0066CC',
+  };
+
+const Button = styled(BaseButton)(
+    ({ theme }) => `
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    background-color: ${blue[500]};
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    transition: all 150ms ease;
+    cursor: pointer;
+    border: 1px solid ${blue[500]};
+    box-shadow: 0 2px 1px ${
+      theme.palette.mode === 'dark' ? 'rgba(0, 0, 0, 0.5)' : 'rgba(45, 45, 60, 0.2)'
+    }, inset 0 1.5px 1px ${blue[400]}, inset 0 -2px 1px ${blue[600]};
+  
+    &:hover {
+      background-color: ${blue[600]};
+    }
+  
+    &:active {
+      background-color: ${blue[700]};
+      box-shadow: none;
+      transform: scale(0.99);
+    }
+  
+    &:focus-visible {
+      box-shadow: 0 0 0 4px ${theme.palette.mode === 'dark' ? blue[300] : blue[200]};
+      outline: none;
+    } `,
+)
