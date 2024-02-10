@@ -7,7 +7,7 @@ import { SearchBar } from './SearchBar';
 import { TagSelect } from './TagSelect/TagSelect';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { RecipeRegistModal } from './RecipeRegistModal/RecipeRegistModal';
-// import { Navigate } from 'react-router-dom';
+import { UserInfoModal } from './UserInfoModal/UserInfoModal';
 import { useNavigate } from 'react-router-dom';
 
 // レシピ一覧の主要コンポーネント
@@ -16,6 +16,12 @@ export const RecipeList = () => {
     // モーダルを開く関数
     const handleOpenModal = () => {
         setModalOpen(true); //tureにすることでモーダルを表示する
+    }
+
+    const [userModalOpen, setUserModalOpen] = React.useState(false); // レシピ登録モーダルの表示状態を管理
+    // モーダルを開く関数
+    const handleOpenUserModal = () => {
+        setUserModalOpen(true); //tureにすることでモーダルを表示する
     }
 
     const navigate = useNavigate();
@@ -29,7 +35,8 @@ export const RecipeList = () => {
         <>
             <div className={styles.header}>
                 <ul>
-                    <AccountCircleIcon className={styles.userIcon} fontSize='large'/>
+                    <AccountCircleIcon className={styles.userIcon} fontSize='large' onClick={handleOpenUserModal}/>
+                    {userModalOpen && <UserInfoModal open={userModalOpen} setOpen={setUserModalOpen} />}
                     <SearchBar />
                     <LogoutIcon className={styles.logoutIcon} />
                 </ul>
