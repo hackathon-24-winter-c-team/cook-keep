@@ -1,14 +1,16 @@
 {
-    "user": [
+    "users": [
     {
         "id": 1,
         "user_name": "A君",
-        "email": "aaa@gmail.com"
+        "email": "aaa@gmail.com",
+        "password": "aaaa"
     },
     {
         "id": 2,
         "user_name": "B君",
-        "email": "bbb@gmail.com"
+        "email": "bbb@gmail.com",
+        "password": "bbbb"
     }
     ]
 }
