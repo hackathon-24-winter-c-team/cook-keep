@@ -1,0 +1,98 @@
+.body {
+    height: 100%;
+    background-color: #ffffff;
+    height: 90%;
+    margin-top: 20px;
+    
+    /* border: 2px solid #000; */
+    box-shadow: 0px 11px 15px -7px rgba(0,0,0,0.2), 0px 24px 38px 3px rgba(0,0,0,0.14), 0px 9px 46px 8px rgba(0,0,0,0.12);
+}
+
+
+.head {
+    position: relative; /* 子要素の絶対位置を親要素に対して相対的にする*/
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+.head h2 {
+    text-align: center;
+    color: black;
+    font-size: small;
+    padding: 0, 4, 4, 4px;
+}
+
+.CancelIcon {
+    position: absolute; /* 親要素に対して相対的な位置を指定する*/
+    right: 4px;
+    color:black;
+}
+
+.recipeIcon {
+    display: flex;
+    justify-content:space-around;
+    margin: 0px 40px;
+}
+
+.url {
+    background-color: rgb(202, 200, 200);
+    width: 90%;
+    border-radius: 4px;
+    text-align: center;
+    margin: 0 auto;
+    color: rgb(88,88,88);
+    display: table;
+}
+
+.icon1 {
+    color: red;
+}
+.icon2 {
+    color: blue;
+}
+.icon3 {
+    color: yellow
+}
+
+.TextField {
+    display:flex;
+    justify-content: center;
+    width: 90%;
+    margin: 20px auto ;
+    padding: 0px;
+}
+
+.tagGroup {
+    color: #000;
+    padding-left: 18px;
+}
+
+.imageUrl {
+    background-color: rgb(202, 200, 200);
+    width: 90%;
+    border-radius: 4px;
+    justify-content: center;
+    text-align: center;
+    margin: 0 auto;
+    color: rgb(88, 88, 88);
+    /* height: 40px; */
+    display: table;
+}
+.imageUrl p {
+    
+    vertical-align: middle;
+}
+
+.memo {
+    text-align: center;
+    padding: 10px
+}
+
+.saveButton {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+    padding-right: 20px;
+}
+
+  
