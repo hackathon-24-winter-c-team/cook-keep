@@ -1,16 +1,22 @@
 {
-    "users": [
+  "users": [
     {
-        "id": 1,
-        "user_name": "A君",
-        "email": "aaa@gmail.com",
-        "password": "aaaa"
+      "id": "1",
+      "username": "A君",
+      "email": "aaa@gmail.com",
+      "password": "aaaa"
     },
     {
-        "id": 2,
-        "user_name": "B君",
-        "email": "bbb@gmail.com",
-        "password": "bbbb"
+      "id": "2",
+      "username": "B君",
+      "email": "bbb@gmail.com",
+      "password": "bbbb"
+    },
+    {
+      "id": "7fec",
+      "username": "テスト君",
+      "email": "test@gmail.com",
+      "password": "test"
     }
-    ]
+  ]
 }

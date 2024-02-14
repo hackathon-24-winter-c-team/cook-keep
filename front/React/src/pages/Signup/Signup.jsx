@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import axios from 'axios';
 
 
 export const Signup = () => {
     const initialValues = {username: "", mailAddress: "", password: "" } // フォームの初期値を設定
     const [formValues, setFormValues] = useState(initialValues) // フォームの値の状態
     const [formErrors, setFormErrors] = useState({}) // フォームのエラーの状態
-    const [isSubmit, setIsSubmit] = useState(false) // 送信状態
     const navigate = useNavigate() // ナビゲーション関数
 
     // フォームの入力値が変更された時に呼び出される関数
@@ -19,16 +19,30 @@ export const Signup = () => {
     }
 
     // フォームが送信された時に呼び出される関数
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault(); // デフォルトの送信動作を防止
+        setFormErrors({}); //エラーメッセージーの初期化
         const errors = validate(formValues); // 入力値のバリデーション
         setFormErrors(errors);  //エラー状態の更新
-        setIsSubmit(true) // 送信状態の更新
 
         // エラーがない場合、登録成功のアラートを表示し、リダイレクトを実行
         if (Object.keys(errors).length === 0) {
-            alert("登録に成功しました")
-            navigate('/recipes');  // レシピ一覧ページへのリダイレクト         
+            try {
+                // json-serverにPOSTリクエストを送信
+                const response = await axios.post('http://localhost:3001/users', {
+                    username: formValues.username,
+                    email: formValues.mailAddress,
+                    password: formValues.password // 本来はパスワードをそのまま保存しない
+                });
+
+                // POSTリクエストが成功した場合の処理
+                console.log('Signup Success:', response.data);
+                navigate('/recipes');  // レシピ一覧ページへのリダイレクト         
+            } catch (error) {
+                // エラー発生時の処理
+                console.error('Signup Error:', error);
+                alert("登録に失敗しました")
+            }
         }
     };
 
@@ -75,9 +89,6 @@ export const Signup = () => {
                     </div>
                     <p className={styles.errorMsg}>{formErrors.password}</p>
                     <Button type='submit' variant="contained">登録する</Button>
-                    {Object.keys(formErrors).length === 0 && isSubmit && (
-                        <div className={styles.msgOk}>登録に成功しました</div>
-                    )}
                 </div>
             </form>
         </div>
