@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}レシピ一覧{% endblock %}
+
+{% block content %}
+{% for item in object_list %}
+<div class='card'>
+    <h5 class='card-header'>{{ item.recipe_name }}</h5>
+    <div class='card-body'>
+        <p class='card-text'>{{ item.data_url }}</p>
+        <h6 class="card-title">{{ item.memo }}</h6>
+    </div>
+{% endfor %}
+{% endblock content %}
