@@ -20,8 +20,9 @@ export const RecipeDetail = () => {
     const handleCancelIconClick = () => {
         navigate('/Recipes')
     }
-    const isLogin = useRecoilValue(currentUserState);
 
+    // ログインしていなかったらログインページへ画面遷移
+    const isLogin = useRecoilValue(currentUserState);
     if (!isLogin) {
         return <Navigate to='/' replace />;
     }
