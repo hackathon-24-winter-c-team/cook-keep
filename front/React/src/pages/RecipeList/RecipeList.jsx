@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './RecipeList.module.css'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -9,6 +8,8 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { RecipeRegistModal } from './RecipeRegistModal/RecipeRegistModal';
 import { UserInfoModal } from './UserInfoModal/UserInfoModal';
 import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import RecipeCard from '../RecipeCard/RecipeCard';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
@@ -28,7 +29,7 @@ export const RecipeList = () => {
 
     // レシピ詳細ページへ遷移する関数 1はレシピIDに変更する必要アリ
     const handleDetailClick = () => {
-        navigate('/recipes/1'); 
+        navigate('/recipes/1');
     };
 
     return (
@@ -41,16 +42,21 @@ export const RecipeList = () => {
                     <LogoutIcon className={styles.logoutIcon} />
                 </ul>
             </div>
+            
             <div>
                 <TagSelect />
             </div>
-            <EditIcon className={styles.editIcon} onClick={handleDetailClick}/>
+            <EditIcon className={styles.editIcon} onClick={handleDetailClick} />
+            <br />
             <div>
-                <AddCircleIcon 
-                className={styles.newRecipeIcon} 
-                sx={{ fontSize: 60}} 
-                color='primary'
-                onClick={handleOpenModal} />
+                <RecipeCard />
+            </div>
+            <div>
+                <AddCircleIcon
+                    className={styles.newRecipeIcon}
+                    sx={{ fontSize: 60 }}
+                    color='primary'
+                    onClick={handleOpenModal} />
                 {/* モーダルが開かれている（modalOpenがtrue）場合にのみ、レシピ登録モーダルを表示 */}
                 {modalOpen && <RecipeRegistModal open={modalOpen} setOpen={setModalOpen} />}
             </div>
