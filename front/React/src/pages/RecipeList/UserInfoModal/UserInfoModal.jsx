@@ -3,6 +3,8 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import PropTypes from 'prop-types';
 import styles from './UserInfoModal.module.css'
+import { useRecoilValue } from 'recoil';
+import { currentUserState } from '../../../state/userState';
 
 const style = {
   position: 'absolute',
@@ -24,6 +26,7 @@ const style = {
 
 export const UserInfoModal = ({ open, setOpen }) => {
   const handleClose = () => setOpen(false);
+  const currentUser = useRecoilValue(currentUserState); // ユーザー情報の取得
 
   // 登録解除ボタンのクリックイベントハンドラ
   const handleUnregister = (e) => {
@@ -50,10 +53,10 @@ export const UserInfoModal = ({ open, setOpen }) => {
       >
         <Box sx={style} >
           <Typography id="user-name" variant="h6" component="h2" sx={{ color: 'white' }} >
-            ユーザー名
+            ユーザー名： {currentUser.username}
           </Typography>
           <Typography id="user-email" sx={{ mt: 2, color: 'whitesmoke' }}>
-            メールアドレス
+            メールアドレス： {currentUser.email}
           </Typography>
           <button className={styles.deleteButton} onClick={handleUnregister}>登録解除</button>
         </Box>
