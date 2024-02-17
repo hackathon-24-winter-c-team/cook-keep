@@ -1,6 +1,6 @@
 import styles from './RecipeDetail.module.css'
 import CancelIcon from '@mui/icons-material/Cancel';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 import TextField from '@mui/material/TextField';
 import Radio from '@mui/material/Radio';
@@ -10,12 +10,20 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { Button as BaseButton } from '@mui/base/Button';
 import { styled } from '@mui/system';
+import { useRecoilValue } from 'recoil';
+import { isLoginState } from '../../state/userState';
+
 
 export const RecipeDetail = () => {
 
     const navigate = useNavigate();
     const handleCancelIconClick = () => {
         navigate('/Recipes')
+    }
+    const isLogin = useRecoilValue(isLoginState);
+
+    if (!isLogin) {
+        return <Navigate to='/' replace />;
     }
 
 

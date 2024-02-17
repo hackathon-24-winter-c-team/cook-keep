@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { useSetRecoilState } from 'recoil';
+import { isLoginState } from '../../state/userState';
 
 
 
@@ -12,6 +14,7 @@ export const Login = () => {
     const [formValues, setFormValues] = useState(initialValues) // フォームの値の状態
     const [formErrors, setFormErrors] = useState({}) // フォームのエラーの状態
     const navigate = useNavigate() // ナビゲーション関数
+    const setIsLogin = useSetRecoilState(isLoginState);
 
     // フォームの入力値が変更された時に呼び出される関数
     const handleChange = (e) => {
@@ -37,6 +40,8 @@ export const Login = () => {
                 });
                 // 認証成功の処理（ユーザーが見つかった場合）
                 if (response.data.length > 0) {
+                    // ログイン状態をtrueに更新
+                    setIsLogin(true);
                     // レシピ一覧ページへリダイレクト
                     navigate('/recipes'); 
                 } else {
