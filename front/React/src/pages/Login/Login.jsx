@@ -32,7 +32,7 @@ export const Login = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにログインリクエストを送信
-                const response = await axios.get('http://localhost:3001/users', {
+                const response = await axios.get('http://localhost:3001/User', {
                     params: {
                         email: formValues.mailAddress,
                         password: formValues.password

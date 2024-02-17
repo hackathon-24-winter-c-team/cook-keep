@@ -10,9 +10,12 @@ import { UserInfoModal } from './UserInfoModal/UserInfoModal';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 import RecipeCard from '../RecipeCard/RecipeCard';
+import { useRecoilState } from 'recoil';
+import { currentUserState } from '../../state/userState';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
+    const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
     const [modalOpen, setModalOpen] = React.useState(false); // レシピ登録モーダルの表示状態を管理
     // モーダルを開く関数
     const handleOpenModal = () => {
@@ -32,6 +35,19 @@ export const RecipeList = () => {
         navigate('/recipes/1');
     };
 
+    // ログインしていなかったらログインページへ画面遷移
+    React.useEffect(() => {
+        if (!currentUser) {
+            navigate('/');
+        }
+    },[currentUser, navigate]); // 依存配列を定義、この値が変更された時のみログインページに遷移する
+    
+    // ログアウトする関数
+    const handleLogout = () => {
+        setCurrentUser(null); // ユーザーの状態をnullにする
+        navigate('/')
+    }
+
     return (
         <>
             <div className={styles.header}>
@@ -39,7 +55,7 @@ export const RecipeList = () => {
                     <AccountCircleIcon className={styles.userIcon} fontSize='large' onClick={handleOpenUserModal}/>
                     {userModalOpen && <UserInfoModal open={userModalOpen} setOpen={setUserModalOpen} />}
                     <SearchBar />
-                    <LogoutIcon className={styles.logoutIcon} />
+                    <LogoutIcon className={styles.logoutIcon} onClick={handleLogout}/>
                 </ul>
             </div>
             

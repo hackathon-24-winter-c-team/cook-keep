@@ -29,7 +29,7 @@ export const Signup = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにPOSTリクエストを送信
-                const response = await axios.post('http://localhost:3001/users', {
+                const response = await axios.post('http://localhost:3001/User', {
                     username: formValues.username,
                     email: formValues.mailAddress,
                     password: formValues.password // 本来はパスワードをそのまま保存しない
@@ -37,7 +37,7 @@ export const Signup = () => {
 
                 // POSTリクエストが成功した場合の処理
                 console.log('Signup Success:', response.data);
-                navigate('/recipes');  // レシピ一覧ページへのリダイレクト         
+                navigate('/');  // ログインページへのリダイレクト         
             } catch (error) {
                 // エラー発生時の処理
                 console.error('Signup Error:', error);
