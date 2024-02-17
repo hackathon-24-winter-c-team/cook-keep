@@ -11,7 +11,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { Button as BaseButton } from '@mui/base/Button';
 import { styled } from '@mui/system';
 import { useRecoilValue } from 'recoil';
-import { isLoginState } from '../../state/userState';
+import { currentUserState } from '../../state/userState';
 
 
 export const RecipeDetail = () => {
@@ -20,7 +20,7 @@ export const RecipeDetail = () => {
     const handleCancelIconClick = () => {
         navigate('/Recipes')
     }
-    const isLogin = useRecoilValue(isLoginState);
+    const isLogin = useRecoilValue(currentUserState);
 
     if (!isLogin) {
         return <Navigate to='/' replace />;
