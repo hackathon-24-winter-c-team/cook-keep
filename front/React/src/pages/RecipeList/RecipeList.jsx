@@ -36,16 +36,13 @@ export const RecipeList = () => {
         <>
             <div className={styles.header}>
                 <ul>
-<<<<<<< HEAD
-                    <AccountCircleIcon className={styles.userIcon} fontSize='large' />
-=======
                     <AccountCircleIcon className={styles.userIcon} fontSize='large' onClick={handleOpenUserModal}/>
                     {userModalOpen && <UserInfoModal open={userModalOpen} setOpen={setUserModalOpen} />}
->>>>>>> e6c4f894f1e2bb6bd111bd3b492234bde8764e9f
                     <SearchBar />
                     <LogoutIcon className={styles.logoutIcon} />
                 </ul>
             </div>
+            
             <div>
                 <TagSelect />
             </div>

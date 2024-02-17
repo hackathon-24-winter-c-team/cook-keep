@@ -18,14 +18,14 @@ export default function RecipeCard() {
                             component="img"
                             height="250"
                             src="https://picsum.photos/300"
-                            alt="green iguana"
+                            alt=""
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }}>
-                                Recipe Name
+                                レシピ名
                             </Typography>
                             <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500' }}>
-                                Recipe URL
+                                レシピURL
                             </Typography>
                         </CardContent>
                     </CardActionArea>
