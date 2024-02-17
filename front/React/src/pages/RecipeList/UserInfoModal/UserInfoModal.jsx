@@ -13,7 +13,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 300,
   height: 500,
-  bgcolor: 'background.black',
+  bgcolor: 'white',
   border: '2px solid #000',
   boxShadow: 24,
   p: 2,
@@ -52,10 +52,10 @@ export const UserInfoModal = ({ open, setOpen }) => {
         aria-describedby="user-email"
       >
         <Box sx={style} >
-          <Typography id="user-name" variant="h6" component="h2" sx={{ color: 'white' }} >
+          <Typography id="user-name" variant="h6" component="h2" sx={{ color: 'black' }} >
             ユーザー名： {currentUser.username}
           </Typography>
-          <Typography id="user-email" sx={{ mt: 2, color: 'whitesmoke' }}>
+          <Typography id="user-email" sx={{ mt: 2, color: 'black' }}>
             メールアドレス： {currentUser.email}
           </Typography>
           <button className={styles.deleteButton} onClick={handleUnregister}>登録解除</button>
