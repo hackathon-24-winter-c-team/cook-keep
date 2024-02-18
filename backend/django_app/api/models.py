@@ -10,6 +10,9 @@ class Recipes(models.Model):
     data_url = models.URLField()
     memo = models.TextField()
 
+    def __str__(self):
+        return self.recipe_name
+
 
 class Images(models.Model):
     id = models.BigAutoField(primary_key=True)
