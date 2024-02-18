@@ -7,7 +7,7 @@ from api import urls
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api-auth/", include("rest_framework.urls")),
-    path("recipes/",include("api.urls")),
+    path("api-auth/login/recipes/",include("api.urls")),
     path("", include("accounts.urls")),
     
     # path("api/", include('router.urls')),
