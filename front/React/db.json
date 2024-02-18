@@ -17,6 +17,34 @@
       "username": "テスト君",
       "email": "test@gmail.com",
       "password": "test"
+    },
+    {
+      "id": "58f6",
+      "username": "test01",
+      "email": "test@example.com",
+      "password": "testtt"
+    }
+  ],
+  "recipes": [
+    {
+      "id": "10",
+      "recipename": "牛丼",
+      "recipeurl": "https://cookpad.com/recipe/1411888",
+      "imageurl": "https://www.yoshinoya.com/wp-content/uploads/2023/02/28134126/gyu-don_nami-2.jpg",
+      "main": "rice",
+      "genre": "japanese",
+      "jitan": "jitan",
+      "memo": "memo"
+    },
+    {
+      "id": "4ad7",
+      "recipename": "test",
+      "recipeurl": "test.com",
+      "imageurl": "test.jpg",
+      "main": "rice",
+      "genre": "japanese",
+      "jitan": "jitan",
+      "memo": "testmemo"
     }
   ]
 }

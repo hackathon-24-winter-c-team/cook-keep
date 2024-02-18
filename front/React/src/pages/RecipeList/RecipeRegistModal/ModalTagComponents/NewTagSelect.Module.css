@@ -1,3 +1,9 @@
 .taglist {
     text-align: center;
 }
+
+.errorMsg {
+    color: red;
+    margin: 0;
+    align-self: flex-start;
+}
