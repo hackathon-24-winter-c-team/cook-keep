@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.shortcuts",
     "rest_framework",
     "rest_framework.authtoken",
     "accounts",
@@ -73,7 +74,7 @@ ROOT_URLCONF = "django_app.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -146,7 +147,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # なおゆきコメント：サーバー起動時のエラー表示回避のため、リダイレクトを仮で指定
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "recipes/list"
 LOGOUT_REDIRECT_URL = "rest_framework:login"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [

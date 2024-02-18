@@ -2,7 +2,10 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from .models import Recipes
-# Create your views here.
+from django.shortcuts import render, get_list_or_404
+from django.contrib import sessions
+
+
 class RecipeView(ListView):
     template_name = 'recipe_list.html'
     model = Recipes
@@ -28,4 +31,10 @@ class UpdateRecipe(UpdateView):
 
 from django.shortcuts import render
 
-# Create your views here.
+
+def recipe_list(request):
+
+    uid = request.user.id
+    recipes_list = get_list_or_404(Recipes, user_id=uid) 
+    template_name = 'recipe_list.html'
+    return render(request, template_name,{'object_list': recipes_list})
