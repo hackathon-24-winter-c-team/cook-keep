@@ -89,11 +89,11 @@ export const Login = () => {
                 <h1>ログインフォーム</h1>
                 <div className={styles.uiForm}>
                     <div className={styles.formField}>
-                        <TextField id="standard-basic" label="メールアドレス" variant="standard" name="mailAddress" onChange={(e) => handleChange(e)}/>
+                        <TextField id="mail-address" label="メールアドレス" variant="standard" name="mailAddress" onChange={(e) => handleChange(e)}/>
                     </div>
                     <p className={styles.errorMsg}>{formErrors.mailAddress}</p>
                     <div className={styles.formField}>
-                        <TextField id="standard-basic" label="パスワード" variant="standard" name="password" onChange={(e) => handleChange(e)}/>
+                        <TextField id="password" label="パスワード" variant="standard" name="password" onChange={(e) => handleChange(e)}/>
                     </div>
                     <p className={styles.errorMsg}>{formErrors.password}</p>
                     <Button variant="contained" color="success" type='submit'>ログイン</Button>
