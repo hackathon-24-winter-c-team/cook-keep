@@ -4,16 +4,18 @@ from django.views.generic import ListView, CreateView, DeleteView, UpdateView
 from .models import Recipes
 from django.shortcuts import render, get_list_or_404
 from django.contrib import sessions
+from django.shortcuts import render
 
 
 class RecipeView(ListView):
     template_name = 'recipe_list.html'
     model = Recipes
 
+
 class CreateRecipe(CreateView):
     template_name = 'recipe_create.html'
     model = Recipes
-    fields = ('id','user_id','recipe_name','data_url','memo')
+    fields = ('id', 'user_id', 'recipe_name', 'data_url', 'memo')
     success_url = reverse_lazy('list-recipe')
 
 
@@ -24,17 +26,15 @@ class DeleteRecipe(DeleteView):
 
 
 class UpdateRecipe(UpdateView):
-    template_name='recipe_update.html'
+    template_name = 'recipe_update.html'
     model = Recipes
-    fields = ('id','user_id','recipe_name','data_url','memo')
+    fields = ('id', 'user_id', 'recipe_name', 'data_url', 'memo')
     success_url = reverse_lazy('list-recipe')
-
-from django.shortcuts import render
 
 
 def recipe_list(request):
 
     uid = request.user.id
-    recipes_list = get_list_or_404(Recipes, user_id=uid) 
+    recipes_list = get_list_or_404(Recipes, user_id=uid)
     template_name = 'recipe_list.html'
-    return render(request, template_name,{'object_list': recipes_list})
+    return render(request, template_name, {'object_list': recipes_list})
