@@ -11,6 +11,8 @@ django = "^4.2.0"
 djangorestframework = "^3.14.0"
 django-storages = "^1.14.2"
 psycopg2 = "^2.9.9"
+boto3 = "^1.34.45"
+pillow = "^10.2.0"
 
 
 [tool.poetry.group.dev.dependencies]
