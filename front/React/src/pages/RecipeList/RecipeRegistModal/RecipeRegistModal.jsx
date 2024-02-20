@@ -81,7 +81,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
 
     // エラーがある場合は処理を中断し、ユーザーに通知
     if (Object.keys(errors).length > 0) {
-      alert("入力値にエラーがあります");
       return;
     }
 
@@ -100,10 +99,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
             const response = await axios.post('http://localhost:3001/recipes', recipeData
             );
             
-
-    console.log(response.data)
-            
             // POSTリクエストが成功した場合の処理
+            alert("レシピが登録されました");
             console.log('Add Success:', response.data);
             handleClose();
             navigate('/recipes');  // レシピ一覧ページへのリダイレクト         
