@@ -59,8 +59,9 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (!values.recipename) {
       errors.recipename = "レシピ名を入力してください";
     }
-    if (!values.recipeurl || !values.imageurl) {
-      errors.recipeurl = "レシピURL、もしくは画像URLを入力してください";
+    if (!values.recipeurl && !values.imageurl) {
+      errors.recipeurl = "レシピURL、または画像URLを入力してください";
+      errors.imageurl = "レシピURL、または画像URLを入力してください"
     }
     if (!values.main) {
       errors.main = "メインタグを入力してください";
@@ -135,15 +136,35 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
               noValidate
               autoComplete="off"
             >
-              <TextField id="recipe-name" label="レシピ名 " variant="standard" name="recipename" onChange={(e) => handleChange(e)} ></TextField>
-              <p>{recipeErrors.recipename}</p>
+              <TextField 
+              id="recipe-name" 
+              label="レシピ名 " 
+              variant="standard" 
+              name="recipename" 
+              onChange={(e) => handleChange(e)} 
+              error={Boolean(recipeErrors.recipename)}
+              helperText={recipeErrors.recipename || ' '}
+              />
 
-              <TextField id="recipe-url" label="レシピ URL" variant="standard" name="recipeurl" onChange={(e) => handleChange(e)} ></TextField>
-              <p>{recipeErrors.recipeurl}</p>
+              <TextField 
+              id="recipe-url" 
+              label="レシピ URL" 
+              variant="standard" 
+              name="recipeurl" 
+              onChange={(e) => handleChange(e)}
+              error={Boolean(recipeErrors.recipeurl)}
+              helperText={recipeErrors.recipeurl || ' '}
+              />
 
-              <TextField id="recipe-image" label="画像 URL" variant="standard" name="imageurl" onChange={(e) => handleChange(e)} ></TextField>
-              <p>{recipeErrors.imageurl}</p>
-
+              <TextField 
+              id="recipe-image" 
+              label="画像 URL" 
+              variant="standard" 
+              name="imageurl" 
+              onChange={(e) => handleChange(e)} 
+              error={Boolean(recipeErrors.imageurl)}
+              helperText={recipeErrors.imageurl || ' '}
+              />
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -163,6 +184,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     value={recipeValues.main}
                     name="main"
                     onChange={(e) => handleChange(e)}
+                    error={Boolean(recipeErrors.main)}
+                    helperText={recipeErrors.main || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -188,6 +211,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     value={recipeValues.genre}
                     name="genre"
                     onChange={handleChange}
+                    error={Boolean(recipeErrors.genre)}
+                    helperText={recipeErrors.genre || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
