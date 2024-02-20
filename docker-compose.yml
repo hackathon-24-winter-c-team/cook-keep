@@ -1,0 +1,40 @@
+version: "3"
+
+volumes:
+  db-data:
+
+services:
+  database:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+
+  backend:
+    container_name: django
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - "./backend/django_app:/code"
+    tty: true
+    stdin_open: true
+    depends_on:
+      - database
+
+  frontend:
+    container_name: react
+    build: ./front
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./front/React:/code"
+    tty: true
+    stdin_open: true
