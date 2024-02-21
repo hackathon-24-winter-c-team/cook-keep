@@ -25,65 +25,9 @@
       "password": "testtt"
     }
   ],
-  "recipes": [
-    {
-      "id": "10",
-      "recipename": "牛丼",
-      "recipeurl": "https://cookpad.com/recipe/1411888",
-      "imageurl": "https://www.yoshinoya.com/wp-content/uploads/2023/02/28134126/gyu-don_nami-2.jpg",
-      "main": "rice",
-      "genre": "japanese",
-      "jitan": "jitan",
-      "memo": "memo"
-    },
-    {
-      "id": "4ad7",
-      "recipename": "test",
-      "recipeurl": "test.com",
-      "imageurl": "test.jpg",
-      "main": "rice",
-      "genre": "japanese",
-      "jitan": "jitan",
-      "memo": "testmemo"
-    },
-    {
-      "id": "a1fb",
-      "recipename": "unko",
-      "recipeurl": "unko.com",
-      "imageurl": "unkounko",
-      "main": "rice",
-      "genre": "japanese",
-      "jitan": "jitan",
-      "memo": "unko"
-    },
-    {
-      "id": "a9c2",
-      "user_id": "1",
-      "recipe_name": "fds",
-      "data_url": "fdsf",
-      "memo": "fdsf",
-      "images": "fdsf",
-      "tags": [
-        "rice",
-        "japanese",
-        "jitan"
-      ]
-    },
+  "Recipes": [
     {
       "id": "82f3",
-      "user_id": "1",
-      "recipe_name": "おにぎり",
-      "data_url": "onigiri.com",
-      "memo": "塩を適量",
-      "images": "onigiri.s3",
-      "tags": [
-        "rice",
-        "japanese",
-        "jitan"
-      ]
-    },
-    {
-      "id": "ae5c",
       "user_id": "1",
       "recipe_name": "おにぎり",
       "data_url": "onigiri.com",
@@ -144,6 +88,45 @@
       "tags": [
         "dessert",
         "japanese",
+        "sonota"
+      ]
+    },
+    {
+      "id": "e848",
+      "user_id": "2",
+      "recipe_name": "オムライス",
+      "data_url": "omurice.jp",
+      "memo": "",
+      "images": "",
+      "tags": [
+        "rice",
+        "western",
+        "sonota"
+      ]
+    },
+    {
+      "id": "b07c",
+      "user_id": "1",
+      "recipe_name": "刺身",
+      "data_url": "sasimi.com",
+      "memo": "",
+      "images": "",
+      "tags": [
+        "fish",
+        "japanese",
+        ""
+      ]
+    },
+    {
+      "id": "25ac",
+      "user_id": "2",
+      "recipe_name": "餃子",
+      "data_url": "gyouza.com",
+      "memo": "",
+      "images": "",
+      "tags": [
+        "meat",
+        "chinese",
         "sonota"
       ]
     }

@@ -96,7 +96,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
               tags: [recipeValues.main, recipeValues.genre, recipeValues.jitan]
             }
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post('http://localhost:3001/recipes', recipeData
+            const response = await axios.post('http://localhost:3001/Recipes', recipeData
             );
             
             // POSTリクエストが成功した場合の処理
@@ -121,8 +121,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h3" component="h2" sx={{ color: 'red', fontWeight: 'bold', textAlign: 'center', mt: 3 }}>
-              新しいレシピ
+            <Typography id="modal-modal-title" variant="h4" component="h4" sx={{ color: 'orange', fontWeight: 'bold', textAlign: 'center', mt: 3 }}>
+              新しいレシピを登録
             </Typography>
 
             <Box
