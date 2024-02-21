@@ -17,8 +17,9 @@ import Select from '@mui/material/Select';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { currentUserState } from '../../../state/userState';
-
+import { recipesState } from '../../../state/recipesState';
 
 
 
@@ -45,6 +46,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   const [recipeErrors, setRecipeErrors] = useState({}) // レシピ追加モーダルのエラーの状態
   const navigate = useNavigate() // ナビゲーション関数
   const currentUser = useRecoilValue(currentUserState);
+  const setRecipesState = useSetRecoilState(recipesState)
 
   // レシピ追加モーダルの入力値が変更された時に呼び出される関数
   const handleChange = (e) => {
@@ -98,7 +100,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
              // json-serverにPOSTリクエストを送信
             const response = await axios.post('http://localhost:3001/Recipes', recipeData
             );
-            
+            setRecipesState(oldRecipes => [...oldRecipes, response.data]);
             // POSTリクエストが成功した場合の処理
             alert("レシピが登録されました");
             console.log('Add Success:', response.data);
