@@ -4,33 +4,41 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Box, CardActionArea } from '@mui/material';
+// import { useRecoilValue } from 'recoil';
+// import { recipesState } from '../../state/recipesState';
+import PropTypes from 'prop-types';
 
+export const RecipeCard = ({ recipe }) => {
+    // const recipe = useRecoilValue(recipesState);
 
-export default function RecipeCard() {
-
-    const recipeCardIds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {recipeCardIds.map((recipeCardId) => (
-                <Card sx={{ maxWidth: 800, m: '10px' }} key={recipeCardId}>
+                <Card sx={{ maxWidth: 800, m: '10px' }}>
                     <CardActionArea>
                         <CardMedia
                             component="img"
                             height="250"
-                            src="https://picsum.photos/300"
-                            alt=""
+                            src={recipe.images || "https://picsum.photos/300"}
+                            alt={recipe.recipe_name}
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }}>
-                                レシピ名
+                                {recipe.recipe_name}
                             </Typography>
                             <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500' }}>
-                                レシピURL
+                                {recipe.data_url}
                             </Typography>
                         </CardContent>
                     </CardActionArea>
                 </Card>
-            ))}
         </Box>
     );
-}
+};
+
+RecipeCard.propTypes = {
+    recipe: PropTypes.shape({
+      recipe_name: PropTypes.string,
+      data_url: PropTypes.string,
+      images: PropTypes.string, 
+    }),
+  };

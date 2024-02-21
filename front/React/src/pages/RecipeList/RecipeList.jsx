@@ -8,15 +8,37 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { RecipeRegistModal } from './RecipeRegistModal/RecipeRegistModal';
 import { UserInfoModal } from './UserInfoModal/UserInfoModal';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
-import RecipeCard from '../RecipeCard/RecipeCard';
-import { useRecoilState } from 'recoil';
+import React, { useEffect } from 'react';
+import { RecipeCard } from '../RecipeCard/RecipeCard';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { currentUserState } from '../../state/userState';
+import { recipesState } from '../../state/recipesState';
+import axios from 'axios';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
+    const recipes = useRecoilValue(recipesState)
     const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
     const [modalOpen, setModalOpen] = React.useState(false); // レシピ登録モーダルの表示状態を管理
+    const setRecipes = useSetRecoilState(recipesState)
+
+    useEffect(() => {
+        async function fetchRecipes() {
+            // currentUserがnullでないことを確認する
+            if (currentUser) {
+                try {
+                    const url = 'http://localhost:3001/Recipes';
+                    const response = await axios.get(url);
+                    console.log(response.data);
+                    setRecipes(response.data);
+                } catch (error) {
+                    console.error('Failed to fetch recipes', error);
+                }
+            }
+        }
+        fetchRecipes();
+    },[currentUser, setRecipes]);
+
     // モーダルを開く関数
     const handleOpenModal = () => {
         setModalOpen(true); //tureにすることでモーダルを表示する
@@ -65,7 +87,9 @@ export const RecipeList = () => {
             <EditIcon className={styles.editIcon} onClick={handleDetailClick} />
             <br />
             <div>
-                <RecipeCard />
+                {recipes.map((recipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe}/>
+                ))}
             </div>
             <div>
                 <AddCircleIcon

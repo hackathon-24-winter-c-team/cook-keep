@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import PropTypes from 'prop-types';
 import { Button, Stack } from '@mui/material';
 import TextField from '@mui/material/TextField';
-import { TextareaAutosize } from '@mui/base/TextareaAutosize';
+// import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 /* import { NewTagSelectMain } from './ModalTagComponents/NewTagSelectMain';
 import { NewTagSelectGenre } from './ModalTagComponents/NewTagSelectGenre';
 import { NewTagSelectJitan } from './ModalTagComponents/NewTagSelectJitan';
@@ -15,8 +15,14 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import axios from 'axios';
-/* import { useNavigate } from 'react-router-dom';
- */
+import { useNavigate } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+import { currentUserState } from '../../../state/userState';
+import { recipesState } from '../../../state/recipesState';
+
+
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -38,8 +44,10 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   const recipeInfo = { recipename: "", recipeurl: "", imageurl: "", main: "", genre: "", jitan: "", memo: "" } //レシピ追加モーダルの初期値
   const [recipeValues, setRecipeValues] = useState(recipeInfo) // レシピ追加モーダルの値の状態
   const [recipeErrors, setRecipeErrors] = useState({}) // レシピ追加モーダルのエラーの状態
-/*   const navigate = useNavigate() // ナビゲーション関数
- */
+  const navigate = useNavigate() // ナビゲーション関数
+  const currentUser = useRecoilValue(currentUserState);
+  const setRecipesState = useSetRecoilState(recipesState)
+
   // レシピ追加モーダルの入力値が変更された時に呼び出される関数
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -53,8 +61,9 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (!values.recipename) {
       errors.recipename = "レシピ名を入力してください";
     }
-    if (!values.recipeurl || !values.imageurl) {
-      errors.recipeurl = "レシピURL、もしくは画像URLを入力してください";
+    if (!values.recipeurl && !values.imageurl) {
+      errors.recipeurl = "レシピURL、または画像URLを入力してください";
+      errors.imageurl = "レシピURL、または画像URLを入力してください"
     }
     if (!values.main) {
       errors.main = "メインタグを入力してください";
@@ -68,22 +77,34 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   // フォームが送信された時に呼び出される関数
   const onClickAdd = async () => {
 
-/*     event.preventDefault(); // デフォルトの送信動作を防止
- */    setRecipeErrors({}); //エラーメッセージーの初期化
+    setRecipeErrors({}); //エラーメッセージーの初期化
     const errors = validate(recipeValues); // 入力値のバリデーション
     setRecipeErrors(errors);  //エラー状態の更新
 
+    // エラーがある場合は処理を中断し、ユーザーに通知
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
     // エラーがない場合、登録成功のアラートを表示し、リダイレクトを実行
-    /*     if (Object.keys(errors).length === 0) {
-          try {
-     */        // json-serverにPOSTリクエストを送信
-    const response = await axios.post('http://localhost:3001/recipes', recipeValues
-);
-
-    console.log(response.data)
-
-    /*         // POSTリクエストが成功した場合の処理
+    if (Object.keys(errors).length === 0) {
+        try {
+            const recipeData = {
+              user_id: currentUser.id,
+              recipe_name: recipeValues.recipename,
+              data_url: recipeValues.recipeurl,
+              memo: recipeValues.memo,
+              images: recipeValues.imageurl,
+              tags: [recipeValues.main, recipeValues.genre, recipeValues.jitan]
+            }
+             // json-serverにPOSTリクエストを送信
+            const response = await axios.post('http://localhost:3001/Recipes', recipeData
+            );
+            setRecipesState(oldRecipes => [...oldRecipes, response.data]);
+            // POSTリクエストが成功した場合の処理
+            alert("レシピが登録されました");
             console.log('Add Success:', response.data);
+            handleClose();
             navigate('/recipes');  // レシピ一覧ページへのリダイレクト         
           } catch (error) {
             // エラー発生時の処理
@@ -92,41 +113,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
           }
         }
       };
-     */
 
-    /*   レシピ追加時の処理
-      const onClickAdd = () => {
-        if (recipeInfo.name === "") {
-          alert("入力値に不足箇所があります。")
-          handleClose();
-          return;
-        }
-        if (recipeInfo.main === "") {
-          alert("入力値に不足箇所があります。")
-          handleClose();
-          return;
-        }
-        if (recipeInfo.genre === "") {
-          alert("入力値に不足箇所があります。")
-          handleClose();
-          return;
-        }
-        if (recipeInfo.jitan === "") {
-          alert("入力値に不足箇所があります。")
-          handleClose();
-          return;
-        }
-    
-        if (recipeInfo.recipeurl === "" || recipeInfo.imageurl === "") {
-          alert("レシピURL、または画像URLを入力して下さい");
-          handleClose();
-          return;
-        }
-    
-        handleSubmit();
-      };
-    */
-      };
     return (
       <div>
         <Modal
@@ -136,8 +123,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h3" component="h2" sx={{ color: 'red', fontWeight: 'bold', textAlign: 'center', mt: 3 }}>
-              新しいレシピ
+            <Typography id="modal-modal-title" variant="h4" component="h4" sx={{ color: 'orange', fontWeight: 'bold', textAlign: 'center', mt: 3 }}>
+              新しいレシピを登録
             </Typography>
 
             <Box
@@ -148,15 +135,35 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
               noValidate
               autoComplete="off"
             >
-              <TextField id="standard-basic" label="レシピ名 " variant="standard" name="recipename" onChange={(e) => handleChange(e)} ></TextField>
-              <p>{recipeErrors.recipename}</p>
+              <TextField 
+              id="recipe-name" 
+              label="レシピ名 " 
+              variant="standard" 
+              name="recipename" 
+              onChange={(e) => handleChange(e)} 
+              error={Boolean(recipeErrors.recipename)}
+              helperText={recipeErrors.recipename || ' '}
+              />
 
-              <TextField id="standard-basic" label="レシピ URL" variant="standard" name="recipeurl" onChange={(e) => handleChange(e)} ></TextField>
-              <p>{recipeErrors.recipeurl}</p>
+              <TextField 
+              id="recipe-url" 
+              label="レシピ URL" 
+              variant="standard" 
+              name="recipeurl" 
+              onChange={(e) => handleChange(e)}
+              error={Boolean(recipeErrors.recipeurl)}
+              helperText={recipeErrors.recipeurl || ' '}
+              />
 
-              <TextField id="standard-basic" label="画像 URL" variant="standard" name="imageurl" onChange={(e) => handleChange(e)} ></TextField>
-              <p>{recipeErrors.imageurl}</p>
-
+              <TextField 
+              id="recipe-image" 
+              label="画像 URL" 
+              variant="standard" 
+              name="imageurl" 
+              onChange={(e) => handleChange(e)} 
+              error={Boolean(recipeErrors.imageurl)}
+              helperText={recipeErrors.imageurl || ' '}
+              />
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -176,6 +183,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     value={recipeValues.main}
                     name="main"
                     onChange={(e) => handleChange(e)}
+                    error={Boolean(recipeErrors.main)}
+                    helperText={recipeErrors.main || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -201,6 +210,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     value={recipeValues.genre}
                     name="genre"
                     onChange={handleChange}
+                    error={Boolean(recipeErrors.genre)}
+                    helperText={recipeErrors.genre || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -226,7 +237,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     onChange={handleChange}
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
-                      <em></em>
                     </MenuItem>
                     <MenuItem value={'jitan'}>時短</MenuItem>
                     <MenuItem value={'sonota'}>その他</MenuItem>
@@ -236,8 +246,18 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
 
 
             </Box>
-
-            <Box sx={{ display: 'flex', mb: 2, mt: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <TextField
+                    id="outlined-multiline-static"
+                    label="メモ"
+                    multiline
+                    rows={6}
+                    name="memo"
+                    defaultValue=""
+                    onChange={handleChange}
+                />
+            </Box>
+            {/* <Box sx={{ display: 'flex', mb: 2, mt: 2 }}>
               <TextareaAutosize
                 minRows={10}
                 maxRows={10}
@@ -247,7 +267,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                 name="memo"
                 onChange={handleChange}
               />
-            </Box>
+            </Box> */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Stack spacing={2} direction="row" sx={{ textAlign: 'center' }}>
                 <Button variant="contained" onClick={onClickAdd}>追加</Button>
@@ -257,7 +277,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
         </Modal >
       </div>
     );
-  }
+} 
 
   RecipeRegistModal.propTypes = {
     open: PropTypes.bool.isRequired,
