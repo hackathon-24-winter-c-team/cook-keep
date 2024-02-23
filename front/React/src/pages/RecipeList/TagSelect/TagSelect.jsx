@@ -4,27 +4,26 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import styles from './TagSelect.module.css'
+import PropTypes from 'prop-types';
 
-export const TagSelect = () => {
+export const TagSelect = ({ onTagsChange }) => {
   // 各カテゴリの選択された値を管理するステート
-  const [main, setMain] = React.useState('');
-  const [genre, setGenre] = React.useState('');
-  const [jitan, setJitan] = React.useState('');
+  const [selectedTags, setSelectedTags] = React.useState({
+    main: '',
+    genre: '',
+    jitan: ''
+  });
 
-  // 'メイン' カテゴリの選択値を更新する関数
-  const handleMainChange = (event) => {
-    setMain(event.target.value);
-  };
+  // 選択されたタグを更新する関数
+    const handleChange = (category) => (event) =>{
+      const newSelectedTags = { ...selectedTags, [category]: event.target.value };
+      setSelectedTags(newSelectedTags);
 
-  // 'ジャンル' カテゴリの選択値を更新する関数
-  const handliGenreChange = (event) => {
-    setGenre(event.target.value)
-  }
+      // オグジェクトから空でない値のみを抽出して配列に変換
+      const tagsArray = Object.values(newSelectedTags).filter(tag => tag !== '');
 
-  // '時短' カテゴリの選択値を更新する関数
-  const handleJitanChange = (event) => {
-    setJitan(event.target.value)
-  }
+      onTagsChange(tagsArray);
+    }
 
   return (
     <div className={styles.taglist}>
@@ -34,9 +33,9 @@ export const TagSelect = () => {
       <Select
         labelId="main-select-label"
         id="main-select"
-        value={main}
+        value={selectedTags.main}
         label="メイン"
-        onChange={handleMainChange}
+        onChange={handleChange('main')}
       >
         <MenuItem value="">
           <em>指定なし</em>
@@ -56,9 +55,9 @@ export const TagSelect = () => {
         <Select
           labelId="genre-select-label"
           id="genre-select"
-          value={genre}
+          value={selectedTags.genre}
           label="ジャンル"
-          onChange={handliGenreChange}
+          onChange={handleChange('genre')}
         >
           <MenuItem value="">
             <em>指定なし</em>
@@ -76,9 +75,9 @@ export const TagSelect = () => {
       <Select
         labelId="jitan-select-label"
         id="jitan-select"
-        value={jitan}
+        value={selectedTags.jitan}
         label="時短"
-        onChange={handleJitanChange}
+        onChange={handleChange('jitan')}
       >
         <MenuItem value="">
           <em>指定なし</em>
@@ -89,3 +88,7 @@ export const TagSelect = () => {
       </div>
   );
 }
+
+TagSelect.propTypes = {
+  onTagsChange: PropTypes.func,
+};
