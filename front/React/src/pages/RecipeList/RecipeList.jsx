@@ -66,7 +66,6 @@ export const RecipeList = () => {
 
     // タグが選択されたときに実行される関数
     const handleTagsChange = (selectedTags) => {
-        console.log('selectedtags:', selectedTags)
         setSearchTag(selectedTags);
     }
 

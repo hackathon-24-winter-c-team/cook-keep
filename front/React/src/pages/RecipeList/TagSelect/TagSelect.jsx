@@ -17,7 +17,6 @@ export const TagSelect = ({ onTagsChange }) => {
   // 選択されたタグを更新する関数
     const handleChange = (category) => (event) =>{
       const newSelectedTags = { ...selectedTags, [category]: event.target.value };
-      console.log('newSelectedTags:', newSelectedTags)
       setSelectedTags(newSelectedTags);
 
       // オグジェクトから空でない値のみを抽出して配列に変換
@@ -25,19 +24,6 @@ export const TagSelect = ({ onTagsChange }) => {
 
       onTagsChange(tagsArray);
     }
-
-
-  // const handleMainChange = (event) => {
-  //   setMain(event.target.value);
-  // };
-
-  // const handliGenreChange = (event) => {
-  //   setGenre(event.target.value)
-  // }
-
-  // const handleJitanChange = (event) => {
-  //   setJitan(event.target.value)
-  // }
 
   return (
     <div className={styles.taglist}>
