@@ -1,7 +1,6 @@
 import styles from './RecipeList.module.css'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import EditIcon from '@mui/icons-material/Edit';
 import { SearchBar } from './SearchBar';
 import { TagSelect } from './TagSelect/TagSelect';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
@@ -114,11 +113,9 @@ export const RecipeList = () => {
             <div>
                 <TagSelect onTagsChange={(handleTagsChange)}/>
             </div>
-            <EditIcon className={styles.editIcon} onClick={handleDetailClick} />
-            <br />
             <div>
                 {filteredRecipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe}/>
+                <RecipeCard key={recipe.id} recipe={recipe} recipeDetail={handleDetailClick}/>
                 ))}
             </div>
             <div>
