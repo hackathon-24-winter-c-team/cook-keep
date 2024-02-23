@@ -22,6 +22,7 @@ export const RecipeList = () => {
     const [modalOpen, setModalOpen] = useState(false); // レシピ登録モーダルの表示状態を管理
     const [searchTerm, setSearchTerm] = useState(''); // 検索バーのテキストを管理
     const [filteredRecipes, setFilteredRecipes] = useState([]); // フィルタリングされたレシピリストを管理
+    const [searchTag, setSearchTag] = useState([]); // タグを選択した状態を管理
 
     useEffect(() => {
         async function fetchRecipes() {
@@ -41,13 +42,33 @@ export const RecipeList = () => {
     },[currentUser, setRecipes]);
 
     useEffect(() => {
-        const results = searchTerm
+        let results = searchTerm
             ? recipes.filter(recipe => 
-                recipe.recipe_name.includes(searchTerm)
+                hiraganaToKatakana(recipe.recipe_name).includes(hiraganaToKatakana(searchTerm))
             )
             : recipes; 
+
+        // タグによる検索を追加
+        if (searchTag.length > 0) {
+            results = results.filter(recipe => 
+                searchTag.every(tag => recipe.tags.includes(tag))
+            )
+        }
         setFilteredRecipes(results);
-    },[searchTerm, recipes]);
+    },[searchTerm, recipes, searchTag]);
+
+    // ひらがなをカタカナに変換する関数
+    const hiraganaToKatakana = (str) => {
+        return str.replace(/[\u3041-\u3096]/g, match =>
+          String.fromCharCode(match.charCodeAt(0) + 0x60)
+        );
+      };
+
+    // タグが選択されたときに実行される関数
+    const handleTagsChange = (selectedTags) => {
+        console.log('selectedtags:', selectedTags)
+        setSearchTag(selectedTags);
+    }
 
     // モーダルを開く関数
     const handleOpenModal = () => {
@@ -92,7 +113,7 @@ export const RecipeList = () => {
             </div>
             
             <div>
-                <TagSelect />
+                <TagSelect onTagsChange={(handleTagsChange)}/>
             </div>
             <EditIcon className={styles.editIcon} onClick={handleDetailClick} />
             <br />
