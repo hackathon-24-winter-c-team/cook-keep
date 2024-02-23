@@ -8,19 +8,20 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { RecipeRegistModal } from './RecipeRegistModal/RecipeRegistModal';
 import { UserInfoModal } from './UserInfoModal/UserInfoModal';
 import { useNavigate } from 'react-router-dom';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RecipeCard } from '../RecipeCard/RecipeCard';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { currentUserState } from '../../state/userState';
 import { recipesState } from '../../state/recipesState';
 import axios from 'axios';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
-    const recipes = useRecoilValue(recipesState)
-    const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
-    const [modalOpen, setModalOpen] = React.useState(false); // レシピ登録モーダルの表示状態を管理
-    const setRecipes = useSetRecoilState(recipesState)
+    const [recipes, setRecipes] = useRecoilState(recipesState) // レシピのデータをRecoilで管理
+    const [currentUser, setCurrentUser] = useRecoilState(currentUserState); // ログインユーザーをグローバルに保持する
+    const [modalOpen, setModalOpen] = useState(false); // レシピ登録モーダルの表示状態を管理
+    const [searchTerm, setSearchTerm] = useState(''); // 検索バーのテキストを管理
+    const [filteredRecipes, setFilteredRecipes] = useState([]); // フィルタリングされたレシピリストを管理
 
     useEffect(() => {
         async function fetchRecipes() {
@@ -38,6 +39,15 @@ export const RecipeList = () => {
         }
         fetchRecipes();
     },[currentUser, setRecipes]);
+
+    useEffect(() => {
+        const results = searchTerm
+            ? recipes.filter(recipe => 
+                recipe.recipe_name.includes(searchTerm)
+            )
+            : recipes; 
+        setFilteredRecipes(results);
+    },[searchTerm, recipes]);
 
     // モーダルを開く関数
     const handleOpenModal = () => {
@@ -76,7 +86,7 @@ export const RecipeList = () => {
                 <ul>
                     <AccountCircleIcon className={styles.userIcon} fontSize='large' onClick={handleOpenUserModal}/>
                     {userModalOpen && <UserInfoModal open={userModalOpen} setOpen={setUserModalOpen} />}
-                    <SearchBar />
+                    <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     <LogoutIcon className={styles.logoutIcon} onClick={handleLogout}/>
                 </ul>
             </div>
@@ -87,7 +97,7 @@ export const RecipeList = () => {
             <EditIcon className={styles.editIcon} onClick={handleDetailClick} />
             <br />
             <div>
-                {recipes.map((recipe) => (
+                {filteredRecipes.map((recipe) => (
                 <RecipeCard key={recipe.id} recipe={recipe}/>
                 ))}
             </div>
