@@ -23,6 +23,12 @@
       "username": "test01",
       "email": "test@example.com",
       "password": "testtt"
+    },
+    {
+      "id": "677b",
+      "username": "testtaro",
+      "email": "test02@example.com",
+      "password": "test02"
     }
   ],
   "Recipes": [
