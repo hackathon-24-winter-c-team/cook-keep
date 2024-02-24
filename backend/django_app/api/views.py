@@ -5,7 +5,8 @@ from .models import Recipes
 from django.shortcuts import render, get_list_or_404
 from django.contrib import sessions
 from django.shortcuts import render
-
+from rest_framework import generics
+from .serializers import RecipeSerializer
 
 class RecipeView(ListView):
     template_name = 'recipe_list.html'
@@ -38,3 +39,14 @@ def recipe_list(request):
     recipes_list = get_list_or_404(Recipes, user_id=uid)
     template_name = 'recipe_list.html'
     return render(request, template_name, {'object_list': recipes_list})
+
+
+# rest framework の ViewSet を用いて作成
+class RecipeList(generics.ListCreateAPIView):
+    queryset = Recipes.objects.all()
+    serializer_class = RecipeSerializer
+
+
+class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Recipes.objects.all()
+    serializer_class = RecipeSerializer
