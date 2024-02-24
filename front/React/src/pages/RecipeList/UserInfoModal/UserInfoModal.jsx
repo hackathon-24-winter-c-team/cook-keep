@@ -5,6 +5,8 @@ import PropTypes from 'prop-types';
 import styles from './UserInfoModal.module.css'
 import { useRecoilValue } from 'recoil';
 import { currentUserState } from '../../../state/userState';
+import { useNavigate } from 'react-router-dom';
+
 
 const style = {
   position: 'absolute',
@@ -24,23 +26,37 @@ const style = {
   
 };
 
+
+
+
 export const UserInfoModal = ({ open, setOpen }) => {
   const handleClose = () => setOpen(false);
   const currentUser = useRecoilValue(currentUserState); // ユーザー情報の取得
-
+  const navigate = useNavigate() // ナビゲーション関数
   // 登録解除ボタンのクリックイベントハンドラ
-  const handleUnregister = (e) => {
+  const handleUnregister = async (e) => {
     e.preventDefault(); // フォームのデフォルト送信動作を防ぐ
 
       // 登録解除を確認する
     const isConfirmed = window.confirm('本当に登録を解除してよろしいですか？');
 
     if (isConfirmed) {
+      try {
         // ユーザーがOKをクリックしたら登録解除する
-        console.log('登録が解除されました')
+        const response = await fetch(`http://localhost:3001/User/${currentUser.id}`, { method: 'DELETE' });
+        if (response.ok) {
+          console.log('登録が解除されました')
+          // ここで状態を更新するか、ページをリフレッシュする
+          navigate('/')
+        } else {
+          console.error('ユーザー削除中にエラーが発生しました')
+        }
+      } catch (error) {
+        console.error('ユーザー削除中にエラーが発生しました', error);
+
     }
   }
-
+};
 
 
   return (

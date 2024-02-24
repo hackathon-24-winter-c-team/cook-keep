@@ -41,6 +41,8 @@ export const TagSelect = ({ onTagsChange }) => {
           <em>指定なし</em>
         </MenuItem>
         <MenuItem value={'rice'}>ご飯</MenuItem>
+        <MenuItem value={'bread'}>パン</MenuItem>
+        <MenuItem value={'noodles'}>麺</MenuItem>
         <MenuItem value={'meat'}>肉</MenuItem>
         <MenuItem value={'fish'}>魚</MenuItem>
         <MenuItem value={'vegetable'}>野菜</MenuItem>
