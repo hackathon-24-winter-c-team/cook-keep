@@ -14,7 +14,9 @@ class Recipes(models.Model):
 
 class Images(models.Model):
     id = models.BigAutoField(primary_key=True)
-    recipe_id = models.ForeignKey(Recipes, on_delete=models.CASCADE, related_name="images")
+    recipe_id = models.ForeignKey(
+        Recipes, on_delete=models.CASCADE, related_name="images"
+    )
     image_url = models.ImageField(upload_to="images/")
 
 
@@ -26,5 +28,9 @@ class Tags(models.Model):
 
 class RecipesTag(models.Model):
     id = models.BigAutoField(primary_key=True)
-    recipe_id = models.ForeignKey(Recipes, on_delete=models.CASCADE, related_name="recipe_tags")
-    tag_id = models.ForeignKey(Tags, on_delete=models.CASCADE, related_name="tag_recipes")
+    recipe_id = models.ForeignKey(
+        Recipes, on_delete=models.CASCADE, related_name="recipe_tags"
+    )
+    tag_id = models.ForeignKey(
+        Tags, on_delete=models.CASCADE, related_name="tag_recipes"
+    )

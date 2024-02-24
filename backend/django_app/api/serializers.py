@@ -5,21 +5,21 @@ from .models import Recipes, Images, Tags, RecipesTag
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tags
-        fields = ['id', 'name', 'icon_url']
+        fields = ["id", "name", "icon_url"]
 
 
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
-        fields = ['image_url']
+        fields = ["image_url"]
 
 
 class RecipeTagSerializer(serializers.ModelSerializer):
-    tag = TagSerializer(read_only=True, source='tag_id')
+    tag = TagSerializer(read_only=True, source="tag_id")
 
     class Meta:
         model = RecipesTag
-        fields = ['tag']
+        fields = ["tag"]
 
 
 class RecipeSerializer(serializers.ModelSerializer):
@@ -28,4 +28,12 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipes
-        fields = ['id', 'user_id', 'recipe_name', 'data_url', 'memo', 'images', 'recipe_tags']
+        fields = [
+            "id",
+            "user_id",
+            "recipe_name",
+            "data_url",
+            "memo",
+            "images",
+            "recipe_tags",
+        ]
