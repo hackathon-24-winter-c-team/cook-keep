@@ -190,6 +190,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                       <em></em>
                     </MenuItem>
                     <MenuItem value={'rice'}>ご飯</MenuItem>
+                    <MenuItem value={'bread'}>パン</MenuItem>
+                    <MenuItem value={'noodles'}>麺</MenuItem>
                     <MenuItem value={'meat'}>肉</MenuItem>
                     <MenuItem value={'fish'}>魚</MenuItem>
                     <MenuItem value={'vegetable'}>野菜</MenuItem>
@@ -239,7 +241,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     <MenuItem value="" sx={{ height: 35 }}>
                     </MenuItem>
                     <MenuItem value={'jitan'}>時短</MenuItem>
-                    <MenuItem value={'sonota'}>その他</MenuItem>
+                    {/* <MenuItem value={'sonota'}>指定なし</MenuItem> */}
                   </Select>
                 </FormControl>
               </div>
