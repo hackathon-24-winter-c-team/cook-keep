@@ -24,7 +24,7 @@ class RecipeTagSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
-    recipe_tags = RecipeTagSerializer(many=True, read_only=True, source='recipe_tags')
+    recipe_tags = RecipeTagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Recipes
