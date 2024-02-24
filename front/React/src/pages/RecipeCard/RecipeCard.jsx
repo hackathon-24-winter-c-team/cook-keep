@@ -47,7 +47,7 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
         mainIcon = fish
     } else if (recipe.tags[0] === 'soup') {
         mainIcon = soup
-    } else if (recipe.tags[0] === 'noodle') {
+    } else if (recipe.tags[0] === 'noodles') {
         mainIcon = noodle
     } else if (recipe.tags[0] === 'bread') {
         mainIcon = bread
