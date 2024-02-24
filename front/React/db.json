@@ -23,10 +23,15 @@
       "username": "test01",
       "email": "test@example.com",
       "password": "testtt"
+    },
+    {
+      "id": "677b",
+      "username": "testtaro",
+      "email": "test02@example.com",
+      "password": "test02"
     }
   ],
   "Recipes": [
-
     {
       "id": "7270",
       "user_id": "1",
@@ -136,6 +141,32 @@
       "user_id": "1",
       "recipe_name": "牛丼",
       "data_url": "https://cookpad.com/recipe/1411888",
+      "memo": "",
+      "images": "",
+      "tags": [
+        "rice",
+        "japanese",
+        "sonota"
+      ]
+    },
+    {
+      "id": "7704",
+      "user_id": "1",
+      "recipe_name": "漬物",
+      "data_url": "https://delishkitchen.tv/recipes/486370804544569698",
+      "memo": "",
+      "images": "",
+      "tags": [
+        "vegetable",
+        "japanese",
+        "jitan"
+      ]
+    },
+    {
+      "id": "14e3",
+      "user_id": "1",
+      "recipe_name": "天丼",
+      "data_url": "https://www.sirogohan.com/recipe/tendon/",
       "memo": "",
       "images": "",
       "tags": [
