@@ -16,27 +16,3 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.recipe_name
-
-
-# class Images(models.Model):
-#     id = models.BigAutoField(primary_key=True)
-#     recipe_id = models.ForeignKey(
-#         Recipes, on_delete=models.CASCADE, related_name="images"
-#     )
-#     image_url = models.ImageField(upload_to="images/")
-
-
-# class Tags(models.Model):
-#     id = models.BigAutoField(primary_key=True)
-#     name = models.CharField(max_length=128)
-#     icon_url = models.URLField()
-
-
-# class RecipesTag(models.Model):
-#     id = models.BigAutoField(primary_key=True)
-#     recipe_id = models.ForeignKey(
-#         Recipes, on_delete=models.CASCADE, related_name="recipe_tags"
-#     )
-#     tag_id = models.ForeignKey(
-#         Tags, on_delete=models.CASCADE, related_name="tag_recipes"
-#     )
