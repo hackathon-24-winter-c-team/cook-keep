@@ -22,7 +22,8 @@ import { currentUserState } from '../../../state/userState';
 import { recipesState } from '../../../state/recipesState';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { imageUrl } from '../../../api/endpoint/uploadImageUrl';
+import { dbEndpoint } from '../../../api/endpoint/dbEndpoint';
+// import { imageUrl } from '../../../api/endpoint/uploadImageUrl';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -62,30 +63,34 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   const navigate = useNavigate() // ナビゲーション関数
   const currentUser = useRecoilValue(currentUserState);
   const setRecipesState = useSetRecoilState(recipesState)
-  const [image1, setImage1] = useState(recipeInfo.image_1);
-  const [image2, setImage2] = useState(recipeInfo.image_2);
-  const [image3, setImage3] = useState(recipeInfo.image_3);
+  const [images, setImages] = useState([]);
 
-  const handleImageUpload = (e, setImage) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file)
-    }
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    const newImages = files.slice(0, 3 - images.length) // 最大3件まで
+    setImages(prevImages => [...prevImages, ...newImages]);
   };
 
 
-  const uploadImageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append('image', file);
+  const uploadImagesAndGetUrls = async () => {
+    const urls = await Promise.all(
+      images.map(async (image) => {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64String = reader.result;
+            const key = `image_${Date.now()}`; // ユニークなキーを生成
+            localStorage.setItem(key, base64String); // ローカルストレージに保存
+            resolve(base64String);
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(image); //画像をBase64エンコード
+        });
+      })
+    );
+    return urls;
+  };
 
-    //ここでローカルストレージまたはS3にアップロード
-    const response = await axios.post({imageUrl}, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    return response.data.imageUrl;
-  }
   // レシピ追加モーダルの入力値が変更された時に呼び出される関数
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,7 +104,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (!values.recipename) {
       errors.recipename = "レシピ名を入力してください";
     }
-    if (!values.recipeurl && !image1 && !image2 && !image3) {
+    if (!values.recipeurl && images.length === 0) {
       errors.recipeurl = "レシピURL、または最低1つの画像をアップロードしてください";
     }
     if (!values.main_tag) {
@@ -127,26 +132,22 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (Object.keys(errors).length === 0) {
         try {
             // 画像が存在する場合にアップロード 
-            const uploadImages = await Promise.all([
-              image1 ? uploadImageUpload(image1) : Promise.resolve(null),
-              image2 ? uploadImageUpload(image2) : Promise.resolve(null),
-              image3 ? uploadImageUpload(image3) : Promise.resolve(null),
-            ]);
+            const imageUrls = await uploadImagesAndGetUrls();
 
             const recipeData = {
               user_id: currentUser.id,
               recipe_name: recipeValues.recipename,
               data_url: recipeValues.recipeurl,
               memo: recipeValues.memo,
-              image_1: uploadImages[0],
-              image_2: uploadImages[1],
-              image_3: uploadImages[2],
+              image_1: imageUrls[0],
+              image_2: imageUrls[1],
+              image_3: imageUrls[2],
               main_tag: recipeValues.main_tag,
               genre_tag: recipeValues.genre_tag,
               jitan_tag: recipeValues.jitan_tag
             }
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post('http://localhost:3001/Recipes', recipeData);
+            const response = await axios.post(`${dbEndpoint}/Recipes`, recipeData);
             setRecipesState(oldRecipes => [...oldRecipes, response.data]);
             // POSTリクエストが成功した場合の処理
             alert("レシピが登録されました");
@@ -209,39 +210,13 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                 tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
               >
-                画像1を追加
+                画像を追加
                 <VisuallyHiddenInput 
                   type="file" 
-                  onChange={(e) => handleImageUpload(e, setImage1)}
+                  multiple
+                  onChange={handleImageUpload}
                 />
               </Button>
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-              >
-                画像2を追加
-                <VisuallyHiddenInput 
-                  type="file" 
-                  onChange={(e) => handleImageUpload(e, setImage2)}
-                />
-              </Button>
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-              >
-                画像3を追加
-                <VisuallyHiddenInput 
-                  type="file" 
-                  onChange={(e) => handleImageUpload(e, setImage3)}
-                />
-              </Button>
-
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
