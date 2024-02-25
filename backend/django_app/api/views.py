@@ -19,7 +19,7 @@ class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Recipe.objects.filter(user_id=self.request.user)
+        return Recipe.objects.filter(user_id=self.request.user.id)
 
     def get_object(self):
         obj = super().get_object()
