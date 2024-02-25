@@ -23,33 +23,23 @@ import western from '../../../public/western.png'
 
 export const RecipeCard = ({ recipe, recipeDetail }) => {
 
-    RecipeCard.propTypes = {
-        recipeDetail: PropTypes.func.isRequired, // onClickプロパティの型をfuncとして指定
-        // 他のプロパティも必要に応じて指定
-    };
-
-    RecipeCard.propTypes = {
-        tags: PropTypes.func.isRequired, // onClickプロパティの型をfuncとして指定
-        // 他のプロパティも必要に応じて指定
-    };
-
     //メインアイコンの指定
     let mainIcon = null;
-    if (recipe.tags[0] === 'rice') {
+    if (recipe.main_tag === 'rice') {
         mainIcon = rice
-    } else if (recipe.tags[0] === 'meat') {
+    } else if (recipe.main_tag === 'meat') {
         mainIcon = meat
-    } else if (recipe.tags[0] === 'vegetable') {
+    } else if (recipe.main_tag === 'vegetable') {
         mainIcon = vegetables
-    } else if (recipe.tags[0] === 'dessert') {
+    } else if (recipe.main_tag === 'dessert') {
         mainIcon = dessert
-    } else if (recipe.tags[0] === 'fish') {
+    } else if (recipe.main_tag === 'fish') {
         mainIcon = fish
-    } else if (recipe.tags[0] === 'soup') {
+    } else if (recipe.main_tag === 'soup') {
         mainIcon = soup
-    } else if (recipe.tags[0] === 'noodles') {
+    } else if (recipe.main_tag === 'noodles') {
         mainIcon = noodle
-    } else if (recipe.tags[0] === 'bread') {
+    } else if (recipe.main_tag === 'bread') {
         mainIcon = bread
     } else {
         mainIcon = 'https://picsum.photos/99'
@@ -57,13 +47,13 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
 
     //ジャンルアイコンの指定
     let junreIcon = null;
-    if (recipe.tags[1] === 'japanese') {
+    if (recipe.genre_tag === 'japanese') {
         junreIcon = japan
-    } else if (recipe.tags[1] === 'chinese') {
+    } else if (recipe.genre_tag === 'chinese') {
         junreIcon = chinese
-    } else if (recipe.tags[1] === 'western') {
+    } else if (recipe.genre_tag === 'western') {
         junreIcon = western
-    } else if (recipe.tags[1] === 'other') {
+    } else if (recipe.genre_tag === 'other') {
         junreIcon = world
     } else {
         junreIcon = 'https://picsum.photos/99'
@@ -71,18 +61,16 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
 
     //時短アイコンの指定
     let jitanIcon = null;
-    if (recipe.tags[2] === 'jitan') {
+    if (recipe.jitan_tag === true) {
         jitanIcon = fast
-    } else if (recipe.tags[2] === 'sonota') {
-        jitanIcon = late
-    } else if (recipe.tags[2] === '') {
+    } else if (recipe.jitan_tag === false) {
         jitanIcon = late
     } else {
         jitanIcon = 'https://picsum.photos/99'
     }
 
 
-    const maxLength = 30;
+    const maxLength = 255;
     let urlLength = [""];
 
     if (recipe.data_url.length <= maxLength) {
@@ -138,9 +126,18 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
 
 RecipeCard.propTypes = {
     recipe: PropTypes.shape({
-        recipe_name: PropTypes.string,
-        data_url: PropTypes.string,
-        images: PropTypes.string,
-        tags: PropTypes.string
+      id: PropTypes.string.isRequired,
+      user_id: PropTypes.string,
+      recipe_name: PropTypes.string,
+      data_url: PropTypes.string,
+      memo: PropTypes.string,
+      image_1: PropTypes.string,  // 画像URLが文字列であることを想定しています。nullも許容します。
+      image_2: PropTypes.string,
+      image_3: PropTypes.string,
+      main_tag: PropTypes.string,
+      genre_tag: PropTypes.string,
+      jitan_tag: PropTypes.bool,  // trueまたはfalseが期待されるため、bool型を指定します。
     }),
-};
+    recipeDetail: PropTypes.func
+  };
+  
