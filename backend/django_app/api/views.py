@@ -6,7 +6,6 @@ from django.shortcuts import render, get_list_or_404
 from django.contrib import sessions
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import RecipeSerializer
 
 
 # class RecipeView(ListView):
