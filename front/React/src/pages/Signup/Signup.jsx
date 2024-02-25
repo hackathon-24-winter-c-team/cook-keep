@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import axios from 'axios';
+import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
 
 
 export const Signup = () => {
@@ -29,7 +30,7 @@ export const Signup = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにPOSTリクエストを送信
-                const response = await axios.post('http://localhost:3001/User', {
+                const response = await axios.post(`${dbEndpoint}/User`, {
                     username: formValues.username,
                     email: formValues.mailAddress,
                     password: formValues.password // 本来はパスワードをそのまま保存しない

@@ -23,7 +23,6 @@ import { recipesState } from '../../../state/recipesState';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { dbEndpoint } from '../../../api/endpoint/dbEndpoint';
-// import { imageUrl } from '../../../api/endpoint/uploadImageUrl';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -61,29 +60,52 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   const [recipeValues, setRecipeValues] = useState(recipeInfo) // レシピ追加モーダルの値の状態
   const [recipeErrors, setRecipeErrors] = useState({}) // レシピ追加モーダルのエラーの状態
   const navigate = useNavigate() // ナビゲーション関数
-  const currentUser = useRecoilValue(currentUserState);
-  const setRecipesState = useSetRecoilState(recipesState)
-  const [images, setImages] = useState([]);
+  const currentUser = useRecoilValue(currentUserState); // ユーザー情報取得
+  const setRecipesState = useSetRecoilState(recipesState) // レシピの状態をセットする
+  const [images, setImages] = useState([]);  // 画像の状態を管理
 
+  // handleImageUpload関数の定義: イベントオブジェクトeを引数に取ります
   const handleImageUpload = (e) => {
-    const files = Array.from(e.target.files);
+    const files = Array.from(e.target.files);  // e.target.filesから得られたファイルオブジェクトの配列を作成
     const newImages = files.slice(0, 3 - images.length) // 最大3件まで
-    setImages(prevImages => [...prevImages, ...newImages]);
+    setImages(prevImages => [...prevImages, ...newImages]); // 現在のimages配列に新しく選択された画像を追加して、images状態を更新
   };
-
-
-  const uploadImagesAndGetUrls = async () => {
-    const urls = await Promise.all(
+  // S3へファイルを保存する関数
+  // const uploadImageToS3 = async (file) => {
+  //   // バックエンドから署名付きURLを取得
+  //   const response = await axios.get('/api/getSignedUrl', {
+  //     params: { fileName: file.name, fileType: file.type }
+  //   });
+  //   const { signedRequest, url } = response.data;
+  
+  //   // 署名付きURLを使用してS3にファイルをアップロード
+  //   await axios.put(signedRequest, file, {
+  //     headers: {
+  //       'Content-Type': file.type
+  //     }
+  //   });
+  
+  //   return url; // S3上のファイルへのアクセスURLを返す
+  // };
+  
+  // const uploadImagesAndGetUrls = async () => {
+  //   const urls = await Promise.all(images.map(uploadImageToS3));
+  //   return urls;
+  // };
+  
+  // 画像のアップロード、URLをの配列を返す関数
+  const uploadImagesAndGetUrls = async () => {  
+    const urls = await Promise.all(     // 画像の配列を処理して、それぞれの画像のURLを取得
       images.map(async (image) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const base64String = reader.result;
-            const key = `image_${Date.now()}`; // ユニークなキーを生成
-            localStorage.setItem(key, base64String); // ローカルストレージに保存
-            resolve(base64String);
+        return new Promise((resolve, reject) => {   // 新しいPromiseを返し、FileReaderを使って画像を処理
+          const reader = new FileReader();     // FileReaderのインスタンスを作成
+          reader.onloadend = () => {           // 読み込みが終了したら実行
+            const base64String = reader.result;   // 結果をbase64文字列として取得
+            const key = `image_${Date.now()}`;    // ユニークなキーを生成
+            localStorage.setItem(key, base64String);   // ローカルストレージにbase64文字列を保存
+            resolve(base64String);         // Promiseを解決し、base64文字列を返す
           };
-          reader.onerror = reject;
+          reader.onerror = reject;     // エラーが発生したらPromiseを拒否
           reader.readAsDataURL(image); //画像をBase64エンコード
         });
       })
@@ -237,7 +259,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     name="main_tag"
                     onChange={(e) => handleChange(e)}
                     error={Boolean(recipeErrors.main_tag)}
-                    // helperText={recipeErrors.main || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -267,7 +288,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     name="genre_tag"
                     onChange={handleChange}
                     error={Boolean(recipeErrors.genre_tag)}
-                    // helperText={recipeErrors.genre || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -315,17 +335,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     onChange={handleChange}
                 />
             </Box>
-            {/* <Box sx={{ display: 'flex', mb: 2, mt: 2 }}>
-              <TextareaAutosize
-                minRows={10}
-                maxRows={10}
-                aria-label="maximum height"
-                placeholder="memo"
-                style={{ width: "100%", }}
-                name="memo"
-                onChange={handleChange}
-              />
-            </Box> */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Stack spacing={2} direction="row" sx={{ textAlign: 'center' }}>
                 <Button variant="contained" onClick={onClickAdd}>保存</Button>
