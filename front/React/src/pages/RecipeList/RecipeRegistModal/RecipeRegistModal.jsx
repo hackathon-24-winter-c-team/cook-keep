@@ -22,6 +22,7 @@ import { currentUserState } from '../../../state/userState';
 import { recipesState } from '../../../state/recipesState';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { imageUrl } from '../../../api/endpoint/uploadImageUrl';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -55,7 +56,7 @@ const style = {
 export const RecipeRegistModal = ({ open, setOpen }) => {
   const handleClose = () => setOpen(false);
 
-  const recipeInfo = { recipename: "", recipeurl: "", image_1: null, image_2: null, image_3: null, main_tag: "", genre_tag: "", jitan_tag: "", memo: "" } //レシピ追加モーダルの初期値
+  const recipeInfo = { recipename: "", recipeurl: "", image_1: null, image_2: null, image_3: null, main_tag: "", genre_tag: "", jitan_tag: false, memo: "" } //レシピ追加モーダルの初期値
   const [recipeValues, setRecipeValues] = useState(recipeInfo) // レシピ追加モーダルの値の状態
   const [recipeErrors, setRecipeErrors] = useState({}) // レシピ追加モーダルのエラーの状態
   const navigate = useNavigate() // ナビゲーション関数
@@ -77,10 +78,8 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const endpoint = 'http://localhost:3000/api/upload';
-
     //ここでローカルストレージまたはS3にアップロード
-    const response = await axios.post(endpoint, formData, {
+    const response = await axios.post({imageUrl}, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
@@ -142,9 +141,9 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
               image_1: uploadImages[0],
               image_2: uploadImages[1],
               image_3: uploadImages[2],
-              main_tag: recipeValues.main,
-              genre_tag: recipeValues.genre,
-              jitan_tag: recipeValues.jitan
+              main_tag: recipeValues.main_tag,
+              genre_tag: recipeValues.genre_tag,
+              jitan_tag: recipeValues.jitan_tag
             }
              // json-serverにPOSTリクエストを送信
             const response = await axios.post('http://localhost:3001/Recipes', recipeData);
@@ -315,15 +314,16 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     labelId="jitan-select-label"
                     id="jitan-select"
                     label="時短"
-                    value={recipeValues.jitan_tag || ''}
+                    value={recipeValues.jitan_tag}
                     name="jitan_tag"
                     onChange={handleChange}
                   >
-                    <MenuItem value="" sx={{ height: 35 }}>
+                    <MenuItem value={false} sx={{ height: 35 }}>
                     </MenuItem>
                     <MenuItem value={true}>はい</MenuItem>
                     <MenuItem value={false}>いいえ</MenuItem>
                   </Select>
+                  <FormHelperText>{recipeErrors.jitan_tag}</FormHelperText>
                 </FormControl>
               </div>
 
