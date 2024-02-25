@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import axios from 'axios';
 import { useSetRecoilState } from 'recoil';
 import { currentUserState } from '../../state/userState';
+import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
 
 
 
@@ -32,7 +33,7 @@ export const Login = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにログインリクエストを送信
-                const response = await axios.get('http://localhost:3001/User', {
+                const response = await axios.get(`${dbEndpoint}/User`, {
                     params: {
                         email: formValues.mailAddress,
                         password: formValues.password

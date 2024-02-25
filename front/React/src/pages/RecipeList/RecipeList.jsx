@@ -13,6 +13,7 @@ import { useRecoilState } from 'recoil';
 import { currentUserState } from '../../state/userState';
 import { recipesState } from '../../state/recipesState';
 import axios from 'axios';
+import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
@@ -28,8 +29,7 @@ export const RecipeList = () => {
             // currentUserがnullでないことを確認する
             if (currentUser) {
                 try {
-                    const url = 'http://localhost:3001/Recipes';
-                    const response = await axios.get(url);
+                    const response = await axios.get(`${dbEndpoint}/Recipes`);
                     console.log(response.data);
                     setRecipes(response.data);
                 } catch (error) {
@@ -50,7 +50,11 @@ export const RecipeList = () => {
         // タグによる検索を追加
         if (searchTag.length > 0) {
             results = results.filter(recipe => 
-                searchTag.every(tag => recipe.tags.includes(tag))
+                searchTag.every(tag =>
+                    tag === recipe.main_tag ||
+                    tag === recipe.genre_tag ||
+                    (tag === "jitan" && recipe.jitan_tag)
+                    )
             )
         }
         setFilteredRecipes(results);

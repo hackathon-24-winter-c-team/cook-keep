@@ -22,7 +22,7 @@ import { currentUserState } from '../../../state/userState';
 import { recipesState } from '../../../state/recipesState';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { imageUrl } from '../../../api/endpoint/uploadImageUrl';
+import { dbEndpoint } from '../../../api/endpoint/dbEndpoint';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -60,32 +60,59 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   const [recipeValues, setRecipeValues] = useState(recipeInfo) // レシピ追加モーダルの値の状態
   const [recipeErrors, setRecipeErrors] = useState({}) // レシピ追加モーダルのエラーの状態
   const navigate = useNavigate() // ナビゲーション関数
-  const currentUser = useRecoilValue(currentUserState);
-  const setRecipesState = useSetRecoilState(recipesState)
-  const [image1, setImage1] = useState(recipeInfo.image_1);
-  const [image2, setImage2] = useState(recipeInfo.image_2);
-  const [image3, setImage3] = useState(recipeInfo.image_3);
+  const currentUser = useRecoilValue(currentUserState); // ユーザー情報取得
+  const setRecipesState = useSetRecoilState(recipesState) // レシピの状態をセットする
+  const [images, setImages] = useState([]);  // 画像の状態を管理
 
-  const handleImageUpload = (e, setImage) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(file)
-    }
+  // handleImageUpload関数の定義: イベントオブジェクトeを引数に取ります
+  const handleImageUpload = (e) => {
+    const files = Array.from(e.target.files);  // e.target.filesから得られたファイルオブジェクトの配列を作成
+    const newImages = files.slice(0, 3 - images.length) // 最大3件まで
+    setImages(prevImages => [...prevImages, ...newImages]); // 現在のimages配列に新しく選択された画像を追加して、images状態を更新
+  };
+  // S3へファイルを保存する関数
+  // const uploadImageToS3 = async (file) => {
+  //   // バックエンドから署名付きURLを取得
+  //   const response = await axios.get('/api/getSignedUrl', {
+  //     params: { fileName: file.name, fileType: file.type }
+  //   });
+  //   const { signedRequest, url } = response.data;
+  
+  //   // 署名付きURLを使用してS3にファイルをアップロード
+  //   await axios.put(signedRequest, file, {
+  //     headers: {
+  //       'Content-Type': file.type
+  //     }
+  //   });
+  
+  //   return url; // S3上のファイルへのアクセスURLを返す
+  // };
+  
+  // const uploadImagesAndGetUrls = async () => {
+  //   const urls = await Promise.all(images.map(uploadImageToS3));
+  //   return urls;
+  // };
+  
+  // 画像のアップロード、URLをの配列を返す関数
+  const uploadImagesAndGetUrls = async () => {  
+    const urls = await Promise.all(     // 画像の配列を処理して、それぞれの画像のURLを取得
+      images.map(async (image) => {
+        return new Promise((resolve, reject) => {   // 新しいPromiseを返し、FileReaderを使って画像を処理
+          const reader = new FileReader();     // FileReaderのインスタンスを作成
+          reader.onloadend = () => {           // 読み込みが終了したら実行
+            const base64String = reader.result;   // 結果をbase64文字列として取得
+            const key = `image_${Date.now()}`;    // ユニークなキーを生成
+            localStorage.setItem(key, base64String);   // ローカルストレージにbase64文字列を保存
+            resolve(base64String);         // Promiseを解決し、base64文字列を返す
+          };
+          reader.onerror = reject;     // エラーが発生したらPromiseを拒否
+          reader.readAsDataURL(image); //画像をBase64エンコード
+        });
+      })
+    );
+    return urls;
   };
 
-
-  const uploadImageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    //ここでローカルストレージまたはS3にアップロード
-    const response = await axios.post({imageUrl}, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    });
-    return response.data.imageUrl;
-  }
   // レシピ追加モーダルの入力値が変更された時に呼び出される関数
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,7 +126,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (!values.recipename) {
       errors.recipename = "レシピ名を入力してください";
     }
-    if (!values.recipeurl && !image1 && !image2 && !image3) {
+    if (!values.recipeurl && images.length === 0) {
       errors.recipeurl = "レシピURL、または最低1つの画像をアップロードしてください";
     }
     if (!values.main_tag) {
@@ -127,26 +154,22 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (Object.keys(errors).length === 0) {
         try {
             // 画像が存在する場合にアップロード 
-            const uploadImages = await Promise.all([
-              image1 ? uploadImageUpload(image1) : Promise.resolve(null),
-              image2 ? uploadImageUpload(image2) : Promise.resolve(null),
-              image3 ? uploadImageUpload(image3) : Promise.resolve(null),
-            ]);
+            const imageUrls = await uploadImagesAndGetUrls();
 
             const recipeData = {
               user_id: currentUser.id,
               recipe_name: recipeValues.recipename,
               data_url: recipeValues.recipeurl,
               memo: recipeValues.memo,
-              image_1: uploadImages[0],
-              image_2: uploadImages[1],
-              image_3: uploadImages[2],
+              image_1: imageUrls[0],
+              image_2: imageUrls[1],
+              image_3: imageUrls[2],
               main_tag: recipeValues.main_tag,
               genre_tag: recipeValues.genre_tag,
               jitan_tag: recipeValues.jitan_tag
             }
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post('http://localhost:3001/Recipes', recipeData);
+            const response = await axios.post(`${dbEndpoint}/Recipes`, recipeData);
             setRecipesState(oldRecipes => [...oldRecipes, response.data]);
             // POSTリクエストが成功した場合の処理
             alert("レシピが登録されました");
@@ -209,39 +232,13 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                 tabIndex={-1}
                 startIcon={<CloudUploadIcon />}
               >
-                画像1を追加
+                画像を追加
                 <VisuallyHiddenInput 
                   type="file" 
-                  onChange={(e) => handleImageUpload(e, setImage1)}
+                  multiple
+                  onChange={handleImageUpload}
                 />
               </Button>
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-              >
-                画像2を追加
-                <VisuallyHiddenInput 
-                  type="file" 
-                  onChange={(e) => handleImageUpload(e, setImage2)}
-                />
-              </Button>
-              <Button
-                component="label"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-              >
-                画像3を追加
-                <VisuallyHiddenInput 
-                  type="file" 
-                  onChange={(e) => handleImageUpload(e, setImage3)}
-                />
-              </Button>
-
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
@@ -262,7 +259,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     name="main_tag"
                     onChange={(e) => handleChange(e)}
                     error={Boolean(recipeErrors.main_tag)}
-                    // helperText={recipeErrors.main || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -292,7 +288,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     name="genre_tag"
                     onChange={handleChange}
                     error={Boolean(recipeErrors.genre_tag)}
-                    // helperText={recipeErrors.genre || ' '}      
                   >
                     <MenuItem value="" sx={{ height: 35 }}>
                       <em></em>
@@ -340,17 +335,6 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
                     onChange={handleChange}
                 />
             </Box>
-            {/* <Box sx={{ display: 'flex', mb: 2, mt: 2 }}>
-              <TextareaAutosize
-                minRows={10}
-                maxRows={10}
-                aria-label="maximum height"
-                placeholder="memo"
-                style={{ width: "100%", }}
-                name="memo"
-                onChange={handleChange}
-              />
-            </Box> */}
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Stack spacing={2} direction="row" sx={{ textAlign: 'center' }}>
                 <Button variant="contained" onClick={onClickAdd}>保存</Button>
