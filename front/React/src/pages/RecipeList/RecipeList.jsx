@@ -50,7 +50,11 @@ export const RecipeList = () => {
         // タグによる検索を追加
         if (searchTag.length > 0) {
             results = results.filter(recipe => 
-                searchTag.every(tag => recipe.tags.includes(tag))
+                searchTag.every(tag =>
+                    tag === recipe.main_tag ||
+                    tag === recipe.genre_tag ||
+                    (tag === "jitan" && recipe.jitan_tag)
+                    )
             )
         }
         setFilteredRecipes(results);

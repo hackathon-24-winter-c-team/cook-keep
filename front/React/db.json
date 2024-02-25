@@ -96,6 +96,19 @@
       "main_tag": "bread",
       "genre_tag": "western",
       "jitan_tag": false
+    },
+    {
+      "id": "aad3",
+      "user_id": "1",
+      "recipe_name": "目玉焼き",
+      "data_url": "https://www.kewpie.co.jp/recipes/basictamago/tamago02/",
+      "memo": "",
+      "image_1": null,
+      "image_2": null,
+      "image_3": null,
+      "main_tag": "meat",
+      "genre_tag": "japanese",
+      "jitan_tag": true
     }
   ]
 }
