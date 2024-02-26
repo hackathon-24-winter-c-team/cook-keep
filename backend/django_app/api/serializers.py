@@ -7,7 +7,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         fields = [
             "id",
-            "user_id",
+            # "user_id",
             "recipe_name",
             "data_url",
             "memo",
@@ -18,3 +18,5 @@ class RecipeSerializer(serializers.ModelSerializer):
             "genre_tag",
             "jitan_tag",
         ]
+        extra_kwargs = {"user_id": {"write_only": True}}
+

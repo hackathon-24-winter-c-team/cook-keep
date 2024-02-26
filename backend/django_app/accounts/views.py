@@ -17,11 +17,11 @@ class CreateUserView(APIView):
 
 
 # トークン認証
-"""なおゆきコメント：silializer.pyを作成した後、以下を有効にする。
+# なおゆきコメント：silializer.pyを作成した後、以下を有効にする。
 
- class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, )
-"""
+#  class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all()
+#     serializer_class = UserSerializer
+#     authentication_classes = (TokenAuthentication,)
+#     permission_classes = (IsAuthenticated, )
+
