@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 volumes:
   db-data:
@@ -16,25 +16,34 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: postgres
-
+    
   backend:
     container_name: django
-    build: ./backend
-    ports:
-      - "8000:8000"
+    build:
+      context: .
+      dockerfile: ./docker-test/Dockerfile-backend
     volumes:
-      - "./backend/django_app:/code"
+      - ./backend/django_app:/django_app
+    ports:
+      - "8000:8000"  # バックエンドのポート設定
     tty: true
-    stdin_open: true
+    command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - database
+    
 
   frontend:
     container_name: react
-    build: ./front
+    build:
+      context: .
+      dockerfile: ./docker-test/Dockerfile-front
+    volumes:
+      - ./front/React:/React
+      - /React/node_modules
     ports:
       - "3000:3000"
-    volumes:
-      - "./front/React:/code"
+      - "5173:5173"  # フロントエンドのポート設定
     tty: true
-    stdin_open: true
+    command: npm run dev
+
+  
