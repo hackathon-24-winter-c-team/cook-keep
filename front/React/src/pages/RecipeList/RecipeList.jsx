@@ -29,7 +29,7 @@ export const RecipeList = () => {
             // currentUserがnullでないことを確認する
             if (currentUser) {
                 try {
-                    const response = await axios.get(`${dbEndpoint}/Recipes`);
+                    const response = await axios.get(`${dbEndpoint}`);
                     console.log(response.data);
                     setRecipes(response.data);
                 } catch (error) {
