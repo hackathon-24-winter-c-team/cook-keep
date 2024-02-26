@@ -124,6 +124,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# ログインをアドレスとパスワードで行うためのもの
+AUTHENTICATION_BACKENDS = [
+    'django_app.authentication.EmailAuthBackend',  # カスタム認証バックエンドのパス
+    'django.contrib.auth.backends.ModelBackend',  # Djangoのデフォルトの認証バックエンド
+]
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
