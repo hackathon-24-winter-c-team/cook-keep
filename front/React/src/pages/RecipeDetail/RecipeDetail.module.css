@@ -95,4 +95,8 @@
     padding-right: 20px;
 }
 
-  
+.arrowBack {
+    position: absolute;
+    left: 8px;
+    color:#000;
+}

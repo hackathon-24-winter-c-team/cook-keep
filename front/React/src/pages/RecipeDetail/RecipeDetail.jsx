@@ -1,5 +1,4 @@
 import styles from './RecipeDetail.module.css'
-import CancelIcon from '@mui/icons-material/Cancel';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Brightness1Icon from '@mui/icons-material/Brightness1';
 import TextField from '@mui/material/TextField';
@@ -12,12 +11,17 @@ import { Button as BaseButton } from '@mui/base/Button';
 import { styled } from '@mui/system';
 import { useRecoilValue } from 'recoil';
 import { currentUserState } from '../../state/userState';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import axios from 'axios';
+import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
 
 
 export const RecipeDetail = () => {
 
     const navigate = useNavigate();
-    const handleCancelIconClick = () => {
+
+    const handleArrowBack = () => {
         navigate('/Recipes')
     }
 
@@ -28,11 +32,30 @@ export const RecipeDetail = () => {
     }
 
 
+    // レシピを削除する関数
+    const handleRecipeDelete = async () => {
+        const isConfirmed = window.confirm('レシピを削除してもよろしいですか？');
+        if (!isConfirmed) {
+            return;
+        }
+        try {
+            const response = await axios.delete(`${dbEndpoint}/Recipes/{ここにレシピIDを追加する}`); // ここに表示しているレシピIDを追加
+            alert('レシピが削除されました');
+            console.log('Delete response:', response.data)   // 削除されたレシピの確認
+            NavigationPreloadManager('/Recipes');
+        } catch (error) {
+            console.error('レシピ削除中にエラーが発生しました:', error);
+            alert('レシピの削除に失敗しました')
+        }
+    }
+
+
     return (
         <div className={styles.body}>
             <div className={styles.head}>
+                <ArrowBackIcon className={styles.arrowBack} fontSize='large' onClick={handleArrowBack}/>
                 <h2>レシピ詳細ページ</h2>
-                <CancelIcon className={styles.CancelIcon} onClick={handleCancelIconClick}/>
+                <DeleteForeverIcon className={styles.CancelIcon} fontSize='large' onClick={handleRecipeDelete}/>
             </div>
             <div className={styles.recipeIcon}>
                 <Brightness1Icon sx={{ fontSize: 60 }} className={styles.icon1}/>
