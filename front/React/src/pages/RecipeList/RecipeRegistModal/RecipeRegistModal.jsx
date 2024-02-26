@@ -169,7 +169,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
               jitan_tag: recipeValues.jitan_tag
             }
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post(`${dbEndpoint}/Recipes`, recipeData);
+            const response = await axios.post(`${dbEndpoint}`, recipeData);
             setRecipesState(oldRecipes => [...oldRecipes, response.data]);
             // POSTリクエストが成功した場合の処理
             alert("レシピが登録されました");
