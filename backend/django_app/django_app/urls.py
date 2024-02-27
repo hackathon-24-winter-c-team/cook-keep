@@ -5,7 +5,7 @@ from accounts import urls
 from api import urls
 
 urlpatterns = [
-    # path("admin/", admin.site.urls),
+    path("admin/", admin.site.urls),
     # path("api-auth/", include("rest_framework.urls")),
     path("api/login/", include("api.urls")),
     path("", include("accounts.urls")),

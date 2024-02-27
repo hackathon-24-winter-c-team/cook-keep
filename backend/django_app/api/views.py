@@ -35,9 +35,12 @@ class RecipeList(generics.ListAPIView):
 既存のレシピ詳細コードではエラーが出てしまいました。以下のコードにすると、user_idはログイン中のものが自動で付与され、
 URLに別のユーザーのレシピIDをセットすると「見つかりませんでした」を返します。こんな感じでどうでしょうか？
 """
+
+
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
+
     def get_queryset(self):
         user = self.request.user
         return Recipe.objects.filter(user_id=user.id)
@@ -48,7 +51,7 @@ class CreateRecipe(generics.CreateAPIView):
     serializer_class = RecipeSerializer
     authentication_classes = (TokenAuthentication,)  # トークン認証を有効化
     permission_classes = (IsAuthenticated,)  # 認証されたユーザーのみ許可
-   
+
     def perform_create(self, serializer):
         # ここでは self.request.user が認証済みユーザーのインスタンスを返す
         serializer.save(user_id=self.request.user)
