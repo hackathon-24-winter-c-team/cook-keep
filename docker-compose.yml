@@ -23,27 +23,31 @@ services:
       context: .
       dockerfile: ./docker-test/Dockerfile-backend
     volumes:
-      - ./backend/django_app:/django_app
+      - ./backend:/backend
     ports:
       - "8000:8000"  # バックエンドのポート設定
     tty: true
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      /bin/sh -c '
+      cd ./django_app/ &&
+      poetry run python manage.py runserver 0.0.0.0:8000
+      '     
     depends_on:
       - database
     
 
-  frontend:
-    container_name: react
-    build:
-      context: .
-      dockerfile: ./docker-test/Dockerfile-front
-    volumes:
-      - ./front/React:/React
-      - /React/node_modules
-    ports:
-      - "3000:3000"
-      - "5173:5173"  # フロントエンドのポート設定
-    tty: true
-    command: npm run dev
+  # frontend:
+  #   container_name: react
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker-test/Dockerfile-front
+  #   volumes:
+  #     - ./front/React:/React
+  #     - /React/node_modules
+  #   ports:
+  #     - "3000:3000"
+  #     - "5173:5173"  # フロントエンドのポート設定
+  #   tty: true
+  #   command: npm run dev
 
   
