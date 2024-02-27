@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Box, CardActionArea } from '@mui/material';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import rice from '../../../public/rice.png';
 import bread from '../../../public/bread.png';
 import dessert from '../../../public/dessert.png';
@@ -20,8 +20,12 @@ import fast from '../../../public/fast.png';
 import late from '../../../public/late.png';
 import soup from '../../../public/soup.png';
 import western from '../../../public/western.png'
+import { useSetRecoilState } from 'recoil';
+import { recipesDetailState } from '../../state/recipeDetailState';
 
 export const RecipeCard = ({ recipe, recipeDetail }) => {
+
+    const setrecipeDetailInfo = useSetRecoilState(recipesDetailState);
 
     //メインアイコンの指定
     let mainIcon = null;
@@ -46,17 +50,17 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
     }
 
     //ジャンルアイコンの指定
-    let junreIcon = null;
+    let genreIcon = null;
     if (recipe.genre_tag === 'japanese') {
-        junreIcon = japan
+        genreIcon = japan
     } else if (recipe.genre_tag === 'chinese') {
-        junreIcon = chinese
+        genreIcon = chinese
     } else if (recipe.genre_tag === 'western') {
-        junreIcon = western
+        genreIcon = western
     } else if (recipe.genre_tag === 'other') {
-        junreIcon = world
+        genreIcon = world
     } else {
-        junreIcon = 'https://picsum.photos/99'
+        genreIcon = 'https://picsum.photos/99'
     }
 
     //時短アイコンの指定
@@ -70,8 +74,12 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
     }
 
 
-    const maxLength = 255;
+    const maxLength = 29;
     let urlLength = [""];
+
+    if (!recipe.data_url ){
+        urlLength = "レシピURLはありません"
+    }
 
     if (recipe.data_url.length <= maxLength) {
         urlLength = recipe.data_url
@@ -79,13 +87,22 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
         urlLength = recipe.data_url.slice(0, maxLength - 3) + "...";
     }
 
+
+    const navigate = useNavigate();
+
+    // レシピ詳細ページへ遷移する関数 1はレシピIDに変更する必要アリ
+    const handleDetailClick = () => {
+        navigate('/recipes/' + recipe.id);
+        setrecipeDetailInfo(recipe);
+    };
+
     //画像イメージ一覧
 
     return (
         <Box sx={{ display: 'inline-flex', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Card sx={{ maxWidth: 300, maxHeight: 300, m: '10px' }}>
                 <CardActionArea sx={{ justifyContent: 'center' }}>
-                    <Box sx={{ height: '50%', display: 'inline-flex', borderBottom: 1, borderColor: 'grey.300' }}>
+                    <Box sx={{ height: '50%', display: 'inline-flex', borderBottom: 1, borderColor: 'grey.300' }} onClick={handleDetailClick}>
                         <CardMedia
                             component="img"
                             sx={{ width: '33%', borderRight: 1, borderColor: 'grey.300' }}
@@ -96,7 +113,7 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
                         <CardMedia
                             component="img"
                             sx={{ width: '33%', borderRight: 1, borderColor: 'grey.300' }}
-                            src={junreIcon}
+                            src={genreIcon}
                             alt={recipe.recipe_name}
                             onClick={recipeDetail}
                         />
@@ -111,7 +128,7 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
                         />
                     </Box>
                     <CardContent>
-                        <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }} onClick={recipeDetail}>
+                        <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }} onClick={handleDetailClick}>
                             {recipe.recipe_name}
                         </Typography>
                         <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }} >

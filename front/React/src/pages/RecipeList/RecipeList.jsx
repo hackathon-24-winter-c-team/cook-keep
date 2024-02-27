@@ -85,10 +85,10 @@ export const RecipeList = () => {
 
     const navigate = useNavigate();
 
-    // レシピ詳細ページへ遷移する関数 1はレシピIDに変更する必要アリ
+   /*   レシピ詳細ページへ遷移する関数 1はレシピIDに変更する必要アリ
     const handleDetailClick = () => {
         navigate('/recipes/1');
-    };
+    }; */
 
     // ログインしていなかったらログインページへ画面遷移
     React.useEffect(() => {
@@ -119,7 +119,7 @@ export const RecipeList = () => {
             </div>
             <div>
                 {filteredRecipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} recipeDetail={handleDetailClick}/>
+                <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
             </div>
             <div>
