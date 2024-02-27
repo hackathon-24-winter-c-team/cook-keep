@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 
 volumes:
   db-data:
@@ -10,8 +10,10 @@ services:
     restart: unless-stopped
     volumes:
       - "db-data:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
@@ -19,22 +21,32 @@ services:
 
   backend:
     container_name: django
-    build: ./backend
-    ports:
-      - "8000:8000"
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
     volumes:
-      - "./backend/django_app:/code"
+      - ./backend:/backend
+    ports:
+      - "8000:8000"  # バックエンドのポート設定
     tty: true
-    stdin_open: true
+    command: >
+      /bin/sh -c '
+      cd ./django_app/ &&
+      poetry run python manage.py runserver 0.0.0.0:8000
+      '
     depends_on:
       - database
 
+
   frontend:
     container_name: react
-    build: ./front
-    ports:
-      - "3000:3000"
+    build:
+      context: .
+      dockerfile: ./front/React/Dockerfile
     volumes:
-      - "./front/React:/code"
+      - ./front/React:/React
+      - /React/node_modules
+    ports:
+      - "5173:5173"  # フロントエンドのポート設定
     tty: true
-    stdin_open: true
+    command: /bin/sh -c "npm run dev"
