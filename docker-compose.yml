@@ -10,8 +10,10 @@ services:
     restart: unless-stopped
     volumes:
       - "db-data:/var/lib/postgresql/data"
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
+    expose:
+      - "5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
@@ -36,18 +38,18 @@ services:
       - database
     
 
-  # frontend:
-  #   container_name: react
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker-test/Dockerfile-front
-  #   volumes:
-  #     - ./front/React:/React
-  #     - /React/node_modules
-  #   ports:
-  #     - "3000:3000"
-  #     - "5173:5173"  # フロントエンドのポート設定
-  #   tty: true
-  #   command: npm run dev
+  frontend:
+    container_name: react
+    build:
+      context: .
+      dockerfile: ./docker-test/Dockerfile-front
+    volumes:
+      - ./front/React:/React
+      - /React/node_modules
+    ports:
+      - "3000:3000"
+      - "5173:5173"  # フロントエンドのポート設定
+    tty: true
+    command: npm run dev
 
   
