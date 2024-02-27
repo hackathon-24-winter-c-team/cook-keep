@@ -24,4 +24,3 @@ class CreateUserView(APIView):
 #     serializer_class = UserSerializer
 #     authentication_classes = (TokenAuthentication,)
 #     permission_classes = (IsAuthenticated, )
-
