@@ -18,12 +18,12 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
       POSTGRES_PASSWORD: postgres
-    
+
   backend:
     container_name: django
     build:
       context: .
-      dockerfile: ./docker-test/Dockerfile-backend
+      dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend:/backend
     ports:
@@ -33,16 +33,16 @@ services:
       /bin/sh -c '
       cd ./django_app/ &&
       poetry run python manage.py runserver 0.0.0.0:8000
-      '     
+      '
     depends_on:
       - database
-    
+
 
   frontend:
     container_name: react
     build:
       context: .
-      dockerfile: ./docker-test/Dockerfile-front
+      dockerfile: ./front/React/Dockerfile
     volumes:
       - ./front/React:/React
       - /React/node_modules
@@ -50,6 +50,4 @@ services:
       - "3000:3000"
       - "5173:5173"  # フロントエンドのポート設定
     tty: true
-    command: npm run dev
-
-  
+    command: /bin/sh -c "npm run dev"
