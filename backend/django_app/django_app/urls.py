@@ -8,7 +8,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # path("api-auth/", include("rest_framework.urls")),
     path("api/login/", include("api.urls")),
-    path("", include("accounts.urls")),
+    path("api/", include("accounts.urls")),
     # path("api/", include('router.urls')),
     # path("api-token-auth/", views.obtain_auth_token),
 ]
