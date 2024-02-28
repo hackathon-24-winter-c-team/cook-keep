@@ -60,7 +60,7 @@ export const RecipeDetail = () => {
             const response = await axios.delete(`${dbEndpoint}/${recipeDetailInfo.id}`); // ここに表示しているレシピIDを追加
             alert('レシピが削除されました');
             console.log('Delete response:', response.data)   // 削除されたレシピの確認
-            NavigationPreloadManager('/Recipes');
+            navigate('/Recipes');
         } catch (error) {
             console.error('レシピ削除中にエラーが発生しました:', error);
             alert('レシピの削除に失敗しました')
