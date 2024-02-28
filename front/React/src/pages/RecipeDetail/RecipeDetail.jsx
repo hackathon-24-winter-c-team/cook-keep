@@ -1,5 +1,5 @@
 import styles from './RecipeDetail.module.css'
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -29,7 +29,7 @@ import fast from '../../../public/fast.png';
 import late from '../../../public/late.png';
 import soup from '../../../public/soup.png';
 import western from '../../../public/western.png'
-import { CardMedia } from '@mui/material';
+import { CardMedia, Typography } from '@mui/material';
 
 
 export const RecipeDetail = () => {
@@ -51,12 +51,13 @@ export const RecipeDetail = () => {
 
     // レシピを削除する関数
     const handleRecipeDelete = async () => {
+        console.log(recipeDetailInfo.id);
         const isConfirmed = window.confirm('レシピを削除してもよろしいですか？');
         if (!isConfirmed) {
             return;
         }
         try {
-            const response = await axios.delete(`${dbEndpoint}/{ここにレシピIDを追加する}`); // ここに表示しているレシピIDを追加
+            const response = await axios.delete(`${dbEndpoint}/${recipeDetailInfo.id}`); // ここに表示しているレシピIDを追加
             alert('レシピが削除されました');
             console.log('Delete response:', response.data)   // 削除されたレシピの確認
             NavigationPreloadManager('/Recipes');
@@ -112,96 +113,111 @@ export const RecipeDetail = () => {
         jitanIcon = 'https://picsum.photos/99'
     }
 
+    const maxLength = 29;
+    let urlLength = "";
+
+    if (recipeDetailInfo.data_url.length <= maxLength) {
+        urlLength = recipeDetailInfo.data_url
+    } else {
+        urlLength = recipeDetailInfo.data_url.slice(0, maxLength - 3) + "...";
+    }
+
 
     return (
-        <div className={styles.body}>
-            <div className={styles.head}>
-                <ArrowBackIcon className={styles.arrowBack} fontSize='large' onClick={handleArrowBack} />
-                <h2>レシピ詳細ページ</h2>
-                <DeleteForeverIcon className={styles.CancelIcon} fontSize='large' onClick={handleRecipeDelete} />
-            </div>
-            <div className={styles.recipeIcon}>
-                <CardMedia
-                    component="img"
-                    sx={{ width: '20%' }}
-                    src={mainIcon}
-                    alt={recipeDetailInfo.recipe_name}
-                />
-                <CardMedia
-                    component="img"
-                    sx={{ width: '20%' }}
-                    src={genreIcon}
-                    alt={recipeDetailInfo.recipe_name}
-                />
-                <CardMedia
-                    component="img"
-                    sx={{ width: '20%' }}
-                    src={jitanIcon}
-                    alt={recipeDetailInfo.recipe_name}
-                />
-            </div>
-            <div className={styles.url}>
-                <p>{recipeDetailInfo.data_url}</p>
-            </div>
-            <div className={styles.TextField}>
-                <TextField id='recipeId' placeholder={recipeDetailInfo.recipe_name}></TextField>
-            </div>
-            <div className={styles.tagGroup}>
-                <FormControl >
-                    <FormLabel id="mainTagGroup">メイン :</FormLabel>
-                    <RadioGroup
-                        row
-                        aria-labelledby="mainTagGroupLabel"
-                        name="mainTagGroup"
-                        value={recipeDetailInfo.main_tag}
+        <div className={styles.html}>
+            <div className={styles.body}>
+                <div className={styles.head}>
+                    <ArrowBackIcon className={styles.arrowBack} fontSize='large' onClick={handleArrowBack} />
+                    <h2>レシピ詳細ページ</h2>
+                    <DeleteForeverIcon className={styles.CancelIcon} fontSize='large' onClick={handleRecipeDelete} />
+                </div>
+                <div className={styles.recipeIcon}>
+                    <CardMedia
+                        component="img"
+                        sx={{ width: '30%' }}
+                        src={mainIcon}
+                        alt={recipeDetailInfo.recipe_name}
+                    />
+                    <CardMedia
+                        component="img"
+                        sx={{ width: '30%' }}
+                        src={genreIcon}
+                        alt={recipeDetailInfo.recipe_name}
+                    />
+                    <CardMedia
+                        component="img"
+                        sx={{ width: '30%' }}
+                        src={jitanIcon}
+                        alt={recipeDetailInfo.recipe_name}
+                    />
+                </div>
+                <div className={styles.url}>
+                    {recipeDetailInfo.data_url && <Typography gutterBottom variant="h6" component="div" sx={{ width: "90%", borderBottom: 1, borderColor: 'grey.500', mb: 2, textAlign: "center", justifyContent: 'center' }} >
+                        <Link target="_blank" to={recipeDetailInfo.data_url} sx={{  }}>{urlLength}</Link>
+                    </Typography>}
+                </div>
+                <div className={styles.TextField}>
+                    <TextField id='recipeId' placeholder={recipeDetailInfo.recipe_name}></TextField>
+                </div>
+                <div className={styles.tagGroup}>
+                    <FormControl >
+                        <FormLabel id="mainTagGroup">メイン :</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="mainTagGroupLabel"
+                            name="mainTagGroup"
+                            value={recipeDetailInfo.main_tag}
 
-                    >
-                        <FormControlLabel value="rice" control={<Radio />} label="ご飯" />
-                        <FormControlLabel value="meat" control={<Radio />} label="肉" />
-                        <FormControlLabel value="fish" control={<Radio />} label="魚" />
-                        <FormControlLabel value="vegetable" control={<Radio />} label="野菜" />
-                        <FormControlLabel value="soup" control={<Radio />} label="汁物" />
-                        <FormControlLabel value="dessert" control={<Radio />} label="デザート" />
-                        <FormControlLabel value="noodles" control={<Radio />} label="麺" />
-                        <FormControlLabel value="bread" control={<Radio />} label="パン" />
-                    </RadioGroup>
-                    <FormLabel id="genreTagGroup">ジャンル :</FormLabel>
-                    <RadioGroup
-                        row
-                        aria-labelledby="genreTagGroupLabel"
-                        name="genreTagGroup"
-                        value={recipeDetailInfo.genre_tag}
-                    >
-                        <FormControlLabel value="japanese" control={<Radio />} label="和食" />
-                        <FormControlLabel value="western" control={<Radio />} label="洋食" />
-                        <FormControlLabel value="chinese" control={<Radio />} label="中華" />
-                        <FormControlLabel value="other" control={<Radio />} label="その他" />
-                    </RadioGroup>
-                    <FormLabel id="jitanTagGroup">時間 :</FormLabel>
-                    <RadioGroup
-                        row
-                        aria-labelledby="jitanTagGroupLabel"
-                        name="jitanTagGroup"
-                        value={recipeDetailInfo.jitan_tag}
-                    >
-                        <FormControlLabel value={true} control={<Radio />} label="時短" />
-                        <FormControlLabel value={false} control={<Radio />} label="指定なし" />
-                    </RadioGroup>
-                </FormControl>
-            </div>
-            <div className={styles.imageUrl}>
-                <p>画像のurlを表示</p>
-            </div>
-            <div className={styles.memo}>
-                <TextField
-                    id="outlined-multiline-static"
-                    label="メモ"
-                    multiline
-                    rows={6}
-                    defaultValue={recipeDetailInfo.memo}>{recipeDetailInfo.memo}</TextField>
-            </div>
-            <div className={styles.saveButton}>
-                <Button >保存</Button>
+                        >
+                            <FormControlLabel value="rice" control={<Radio />} label="ご飯" />
+                            <FormControlLabel value="meat" control={<Radio />} label="肉" />
+                            <FormControlLabel value="fish" control={<Radio />} label="魚" />
+                            <FormControlLabel value="vegetable" control={<Radio />} label="野菜" />
+                            <FormControlLabel value="soup" control={<Radio />} label="汁物" />
+                            <FormControlLabel value="dessert" control={<Radio />} label="デザート" />
+                            <FormControlLabel value="noodles" control={<Radio />} label="麺" />
+                            <FormControlLabel value="bread" control={<Radio />} label="パン" />
+                        </RadioGroup>
+                        <FormLabel id="genreTagGroup">ジャンル :</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="genreTagGroupLabel"
+                            name="genreTagGroup"
+                            value={recipeDetailInfo.genre_tag}
+                        >
+                            <FormControlLabel value="japanese" control={<Radio />} label="和食" />
+                            <FormControlLabel value="western" control={<Radio />} label="洋食" />
+                            <FormControlLabel value="chinese" control={<Radio />} label="中華" />
+                            <FormControlLabel value="other" control={<Radio />} label="その他" />
+                        </RadioGroup>
+                        <FormLabel id="jitanTagGroup">時間 :</FormLabel>
+                        <RadioGroup
+                            row
+                            aria-labelledby="jitanTagGroupLabel"
+                            name="jitanTagGroup"
+                            value={recipeDetailInfo.jitan_tag}
+                        >
+                            <FormControlLabel value={true} control={<Radio />} label="時短" />
+                            <FormControlLabel value={false} control={<Radio />} label="指定なし" />
+                        </RadioGroup>
+                    </FormControl>
+                </div>
+                <div className={styles.imageUrl}>
+                    {recipeDetailInfo.image_1 && <img className='image' src={recipeDetailInfo.image_1} alt="error" />}
+                    {recipeDetailInfo.image_2 && <img className='image' src={recipeDetailInfo.image_2} alt="error" />}
+                    {recipeDetailInfo.image_3 && <img className='image' src={recipeDetailInfo.image_3} alt="error" />}
+                </div>
+                <div className={styles.memo}>
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="メモ"
+                        multiline
+                        rows={6}
+                        defaultValue={recipeDetailInfo.memo}>{recipeDetailInfo.memo}</TextField>
+                </div>
+                <div className={styles.saveButton}>
+                    <Button >保存</Button>
+                </div>
             </div>
         </div>
     )

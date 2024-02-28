@@ -1,7 +1,13 @@
+.html {
+    display: flex;
+    justify-content: center;
+}
+
 .body {
     height: 100%;
     background-color: #ffffff;
     height: 90%;
+    width : 90%;
     margin-top: 20px;
     
     /* border: 2px solid #000; */
@@ -35,10 +41,10 @@
 }
 
 .url {
-    background-color: rgb(202, 200, 200);
     width: 90%;
     border-radius: 4px;
     text-align: center;
+    justify-content: center;
     margin: 0 auto;
     color: rgb(88,88,88);
     display: table;
@@ -99,4 +105,8 @@
     position: absolute;
     left: 8px;
     color:#000;
+}
+
+.image {
+    width: 90%;
 }

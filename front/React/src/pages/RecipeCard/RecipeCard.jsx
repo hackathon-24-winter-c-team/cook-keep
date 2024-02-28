@@ -23,7 +23,7 @@ import western from '../../../public/western.png'
 import { useSetRecoilState } from 'recoil';
 import { recipesDetailState } from '../../state/recipeDetailState';
 
-export const RecipeCard = ({ recipe, recipeDetail }) => {
+export const RecipeCard = ({ recipe }) => {
 
     const setrecipeDetailInfo = useSetRecoilState(recipesDetailState);
 
@@ -75,11 +75,7 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
 
 
     const maxLength = 29;
-    let urlLength = [""];
-
-    if (!recipe.data_url ){
-        urlLength = "レシピURLはありません"
-    }
+    let urlLength = "";
 
     if (recipe.data_url.length <= maxLength) {
         urlLength = recipe.data_url
@@ -108,14 +104,12 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
                             sx={{ width: '33%', borderRight: 1, borderColor: 'grey.300' }}
                             src={mainIcon}
                             alt={recipe.recipe_name}
-                            onClick={recipeDetail}
                         />
                         <CardMedia
                             component="img"
                             sx={{ width: '33%', borderRight: 1, borderColor: 'grey.300' }}
                             src={genreIcon}
                             alt={recipe.recipe_name}
-                            onClick={recipeDetail}
                         />
                         <CardMedia
                             component="img"
@@ -124,16 +118,18 @@ export const RecipeCard = ({ recipe, recipeDetail }) => {
                             width="33%"
                             src={jitanIcon}
                             alt={recipe.recipe_name}
-                            onClick={recipeDetail}
                         />
                     </Box>
                     <CardContent>
                         <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }} onClick={handleDetailClick}>
                             {recipe.recipe_name}
                         </Typography>
-                        <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }} >
+                        {recipe.data_url && <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2 }} >
                             <Link target="_blank" to={recipe.data_url} sx={{ borderBottom: 1, borderColor: 'grey.500' }}>{urlLength}</Link>
-                        </Typography>
+                        </Typography>}
+                        {recipe.data_url === "" && <Typography gutterBottom variant="h6" component="div" sx={{ borderBottom: 1, borderColor: 'grey.500', mb: 2, fontSize: 20 }} onClick={handleDetailClick}>
+                            レシピURLはありません
+                        </Typography>}
                     </CardContent>
                 </CardActionArea>
             </Card>
