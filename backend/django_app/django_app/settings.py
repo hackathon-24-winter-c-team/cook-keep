@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "accounts",
     "api",
     "storages",
+    "corsheaders",
 ]
 
 REST_FRAMEWORK = {
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 ROOT_URLCONF = "django_app.urls"
@@ -164,6 +166,9 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = "accounts.User"
+
+# CORS 設定
+CORS_ORIGIN_WHITELIST = ["http://localhost:5173"]
 
 # AWS S3 Setting
 # Waring 認証情報はリポジトリに上げないように
