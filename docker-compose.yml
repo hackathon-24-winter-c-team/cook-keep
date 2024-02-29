@@ -26,27 +26,38 @@ services:
       dockerfile: ./backend/Dockerfile
     volumes:
       - ./backend:/backend
-    ports:
-      - "8000:8000"  # バックエンドのポート設定
+    # ports:
+    #   - "8000:8000"  # バックエンドのポート設定
+    expose:
+        - "8000"
     tty: true
     command: >
       /bin/sh -c '
       cd ./django_app/ &&
-      poetry run python manage.py runserver 0.0.0.0:8000
+      poetry run gunicorn -w 4 django_app.wsgi:application --bind 0.0.0.0:8000
       '
     depends_on:
       - database
 
-
-  frontend:
-    container_name: react
+  nginx:
+    container_name: nginx
     build:
       context: .
-      dockerfile: ./front/React/Dockerfile
-    volumes:
-      - ./front/React:/React
-      - /React/node_modules
+      dockerfile: ./nginx/Dockerfile
     ports:
-      - "5173:5173"  # フロントエンドのポート設定
-    tty: true
-    command: /bin/sh -c "npm run dev"
+      - 8080:80
+    depends_on:
+      - backend  
+
+  # frontend:
+  #   container_name: react
+  #   build:
+  #     context: .
+  #     dockerfile: ./front/React/Dockerfile
+  #   volumes:
+  #     - ./front/React:/React
+  #     - /React/node_modules
+  #   ports:
+  #     - "5173:5173"  # フロントエンドのポート設定
+  #   tty: true
+  #   command: /bin/sh -c "npm run dev"
