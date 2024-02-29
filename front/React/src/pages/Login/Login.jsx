@@ -11,7 +11,7 @@ import { authEndpoint } from '../../api/endpoint/authEndpoint';
 
 
 export const Login = () => {
-    const initialValues = {mailAddress: "", password: "" } // フォームの初期値を設定
+    const initialValues = {username: "", password: "" } // フォームの初期値を設定
     const [formValues, setFormValues] = useState(initialValues) // フォームの値の状態
     const [formErrors, setFormErrors] = useState({}) // フォームのエラーの状態
     const navigate = useNavigate() // ナビゲーション関数
@@ -35,7 +35,7 @@ export const Login = () => {
                 // json-serverにログインリクエストを送信
                 const response = await axios.get( `${authEndpoint}`, {
                     params: {
-                        email: formValues.mailAddress,
+                        username: formValues.username,
                         password: formValues.password
                     }
                 });
@@ -60,13 +60,13 @@ export const Login = () => {
     // フォームの値を検証し、エラーがあればそれを返す関数
     const validate = (values) => {
         const errors = {};
-        const regex = 
-            /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
+        // const regex = 
+        //     /^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\.)+[a-zA-Z]{2,}$/;
 
-        if(!values.mailAddress) {
-            errors.mailAddress = "メールアドレスを入力してください";
-        } else if (!regex.test(values.mailAddress)) {
-            errors.mailAddress = "正しいメールアドレスを入力してください";
+        if(!values.username) {
+            errors.username = "メールアドレスを入力してください";
+        // } else if (!regex.test(values.username)) {
+        //     errors.username = "正しいメールアドレスを入力してください";
         }
         if(!values.password) {
             errors.password = "パスワードを入力してください";
@@ -90,9 +90,9 @@ export const Login = () => {
                 <h1>ログインフォーム</h1>
                 <div className={styles.uiForm}>
                     <div className={styles.formField}>
-                        <TextField id="mail-address" label="メールアドレス" variant="standard" name="mailAddress" onChange={(e) => handleChange(e)}/>
+                        <TextField id="username" label="ユーザー名" variant="standard" name="username" onChange={(e) => handleChange(e)}/>
                     </div>
-                    <p className={styles.errorMsg}>{formErrors.mailAddress}</p>
+                    <p className={styles.errorMsg}>{formErrors.username}</p>
                     <div className={styles.formField}>
                         <TextField id="password" label="パスワード" variant="standard" name="password" onChange={(e) => handleChange(e)}/>
                     </div>
