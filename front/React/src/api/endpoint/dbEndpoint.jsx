@@ -1,1 +1,0 @@
-export const dbEndpoint = 'http://localhost:3001/Recipes'

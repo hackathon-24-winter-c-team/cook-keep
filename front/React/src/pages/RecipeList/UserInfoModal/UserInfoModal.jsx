@@ -6,6 +6,8 @@ import styles from './UserInfoModal.module.css'
 import { useRecoilValue } from 'recoil';
 import { currentUserState } from '../../../state/userState';
 import { useNavigate } from 'react-router-dom';
+import { domainEndpoint } from '../../../api/endpoint/domainEndpoint';
+import { loginEndpoint } from '../../../api/endpoint/loginEndpoint';
 
 
 const style = {
@@ -43,7 +45,7 @@ export const UserInfoModal = ({ open, setOpen }) => {
     if (isConfirmed) {
       try {
         // ユーザーがOKをクリックしたら登録解除する
-        const response = await fetch(`http://localhost:3001/User/${currentUser.id}`, { method: 'DELETE' });
+        const response = await fetch(`${domainEndpoint}/${loginEndpoint}/${currentUser.id}`, { method: 'DELETE' });
         if (response.ok) {
           console.log('登録が解除されました')
           // ここで状態を更新するか、ページをリフレッシュする

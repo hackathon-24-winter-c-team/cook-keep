@@ -22,7 +22,9 @@ import { currentUserState } from '../../../state/userState';
 import { recipesState } from '../../../state/recipesState';
 import { styled } from '@mui/material/styles';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { dbEndpoint } from '../../../api/endpoint/dbEndpoint';
+/* import { dbEndpoint } from '../../../api/endpoint/dbEndpoint';
+ */import { domainEndpoint } from '../../../api/endpoint/domainEndpoint';
+import { recipeEndpoint } from '../../../api/endpoint/recipeRegistEndpoint';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -169,7 +171,7 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
               jitan_tag: recipeValues.jitan_tag
             }
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post(`${dbEndpoint}`, recipeData);
+            const response = await axios.post(`${domainEndpoint}/${recipeEndpoint}`, recipeData);
             setRecipesState(oldRecipes => [...oldRecipes, response.data]);
             // POSTリクエストが成功した場合の処理
             alert("レシピが登録されました");

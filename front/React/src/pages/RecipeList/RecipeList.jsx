@@ -13,7 +13,9 @@ import { useRecoilState } from 'recoil';
 import { currentUserState } from '../../state/userState';
 import { recipesState } from '../../state/recipesState';
 import axios from 'axios';
-import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
+/* import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
+ */import { domainEndpoint } from '../../api/endpoint/domainEndpoint';
+import { recipesEndpoint } from '../../api/endpoint/recipesEndpoint';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
@@ -29,7 +31,7 @@ export const RecipeList = () => {
             // currentUserがnullでないことを確認する
             if (currentUser) {
                 try {
-                    const response = await axios.get(`${dbEndpoint}`);
+                    const response = await axios.get(`${domainEndpoint}/${recipesEndpoint}`);
                     console.log(response.data);
                     setRecipes(response.data);
                 } catch (error) {
