@@ -46,15 +46,12 @@ INSTALLED_APPS = [
     "corsheaders",
 ]
 
+# なおゆきコメント：認証トークンの単体テスト（ブラウザ）用に追加
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
-    ]
-}
-
-# なおゆきコメント：認証トークンの単体テスト（ブラウザ）用に追加
-REST_FRAMEWORK = {
+    ],
     "DEFAULT_RENDERER_CLASSES": (
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
@@ -193,14 +190,12 @@ AWS_HEADERS = {
     "Access-Control-Allow-Origin": "*",
 }
 
-"""
 # Static files
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3StaticStorage"
 
-STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static"
+# STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/static"
 
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media"
-"""
+# MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media"
