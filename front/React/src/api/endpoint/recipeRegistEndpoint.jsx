@@ -1,3 +1,3 @@
 
 //レシピ登録のAPI
-export const recipeEndpoint = '/api/login/recipes/';
+export const recipeEndpoint = '/api/login/create/';
