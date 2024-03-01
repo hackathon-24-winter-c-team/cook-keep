@@ -96,24 +96,24 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
   // };
   
   // 画像のアップロード、URLをの配列を返す関数
-  const uploadImagesAndGetUrls = async () => {  
-    const urls = await Promise.all(     // 画像の配列を処理して、それぞれの画像のURLを取得
-      images.map(async (image) => {
-        return new Promise((resolve, reject) => {   // 新しいPromiseを返し、FileReaderを使って画像を処理
-          const reader = new FileReader();     // FileReaderのインスタンスを作成
-          reader.onloadend = () => {           // 読み込みが終了したら実行
-            const base64String = reader.result;   // 結果をbase64文字列として取得
-            const key = `image_${Date.now()}`;    // ユニークなキーを生成
-            localStorage.setItem(key, base64String);   // ローカルストレージにbase64文字列を保存
-            resolve(base64String);         // Promiseを解決し、base64文字列を返す
-          };
-          reader.onerror = reject;     // エラーが発生したらPromiseを拒否
-          reader.readAsDataURL(image); //画像をBase64エンコード
-        });
-      })
-    );
-    return urls;
-  };
+  // const uploadImagesAndGetUrls = async () => {  
+  //   const urls = await Promise.all(     // 画像の配列を処理して、それぞれの画像のURLを取得
+  //     images.map(async (image) => {
+  //       return new Promise((resolve, reject) => {   // 新しいPromiseを返し、FileReaderを使って画像を処理
+  //         const reader = new FileReader();     // FileReaderのインスタンスを作成
+  //         reader.onloadend = () => {           // 読み込みが終了したら実行
+  //           const base64String = reader.result;   // 結果をbase64文字列として取得
+  //           const key = `image_${Date.now()}`;    // ユニークなキーを生成
+  //           localStorage.setItem(key, base64String);   // ローカルストレージにbase64文字列を保存
+  //           resolve(base64String);         // Promiseを解決し、base64文字列を返す
+  //         };
+  //         reader.onerror = reject;     // エラーが発生したらPromiseを拒否
+  //         reader.readAsDataURL(image); //画像をBase64エンコード
+  //       });
+  //     })
+  //   );
+  //   return urls;
+  // };
 
   // レシピ追加モーダルの入力値が変更された時に呼び出される関数
   const handleChange = (e) => {
@@ -156,22 +156,24 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     if (Object.keys(errors).length === 0) {
         try {
             // 画像が存在する場合にアップロード 
-            const imageUrls = await uploadImagesAndGetUrls();
+            // const imageUrls = await uploadImagesAndGetUrls();
 
             const recipeData = {
               user_id: currentUser.id,
               recipe_name: recipeValues.recipename,
               data_url: recipeValues.recipeurl,
               memo: recipeValues.memo,
-              image_1: imageUrls[0],
-              image_2: imageUrls[1],
-              image_3: imageUrls[2],
+              // image_1: imageUrls[0],
+              // image_2: imageUrls[1],
+              // image_3: imageUrls[2],
               main_tag: recipeValues.main_tag,
               genre_tag: recipeValues.genre_tag,
               jitan_tag: recipeValues.jitan_tag
             }
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post(`${domainEndpoint}/${recipeEndpoint}`, recipeData);
+            const response = await axios.post(`${domainEndpoint}${recipeEndpoint}`, recipeData, {
+              headers: {Authorization: `Token ${currentUser}`}
+            });
             setRecipesState(oldRecipes => [...oldRecipes, response.data]);
             // POSTリクエストが成功した場合の処理
             alert("レシピが登録されました");

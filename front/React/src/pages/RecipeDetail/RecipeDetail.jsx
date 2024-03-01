@@ -36,6 +36,8 @@ import { recipesEndpoint } from '../../api/endpoint/recipesEndpoint';
 
 export const RecipeDetail = () => {
 
+    const currentUser = useRecoilValue(currentUserState); // ログインユーザーをグローバルに保持する
+
     const recipeDetailInfo = useRecoilValue(recipesDetailState);
 
     const navigate = useNavigate();
@@ -59,7 +61,10 @@ export const RecipeDetail = () => {
             return;
         }
         try {
-            const response = await axios.delete(`${domainEndpoint}/${recipesEndpoint}/${recipeDetailInfo.id}`); // ここに表示しているレシピIDを追加
+            const response = await axios.delete(`${domainEndpoint}${recipesEndpoint}${recipeDetailInfo.id}`, {
+                headers: {Authorization: `Token ${currentUser}`},
+                data: {}
+            }); // ここに表示しているレシピIDを追加
             alert('レシピが削除されました');
             console.log('Delete response:', response.data)   // 削除されたレシピの確認
             navigate('/Recipes');
