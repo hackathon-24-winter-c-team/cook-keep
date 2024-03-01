@@ -13,8 +13,8 @@ import { currentUserState } from '../../state/userState';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import axios from 'axios';
-import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
-import { recipesDetailState } from '../../state/recipeDetailState';
+/* import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
+ */import { recipesDetailState } from '../../state/recipeDetailState';
 import rice from '../../../public/rice.png';
 import bread from '../../../public/bread.png';
 import dessert from '../../../public/dessert.png';
@@ -30,6 +30,8 @@ import late from '../../../public/late.png';
 import soup from '../../../public/soup.png';
 import western from '../../../public/western.png'
 import { CardMedia, Typography } from '@mui/material';
+import { domainEndpoint } from '../../api/endpoint/domainEndpoint';
+import { recipesEndpoint } from '../../api/endpoint/recipesEndpoint';
 
 
 export const RecipeDetail = () => {
@@ -57,7 +59,7 @@ export const RecipeDetail = () => {
             return;
         }
         try {
-            const response = await axios.delete(`${dbEndpoint}/${recipeDetailInfo.id}`); // ここに表示しているレシピIDを追加
+            const response = await axios.delete(`${domainEndpoint}/${recipesEndpoint}/${recipeDetailInfo.id}`); // ここに表示しているレシピIDを追加
             alert('レシピが削除されました');
             console.log('Delete response:', response.data)   // 削除されたレシピの確認
             navigate('/Recipes');
