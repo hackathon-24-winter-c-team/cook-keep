@@ -31,7 +31,10 @@ export const RecipeList = () => {
             // currentUserがnullでないことを確認する
             if (currentUser) {
                 try {
-                    const response = await axios.get(`${domainEndpoint}/${recipesEndpoint}`);
+                    const response = await axios.get(`${domainEndpoint}/${recipesEndpoint}`,{
+                        headers: {Authorization: `Token ${currentUser}`},
+                        data: {}
+                    });
                     console.log(response.data);
                     setRecipes(response.data);
                 } catch (error) {

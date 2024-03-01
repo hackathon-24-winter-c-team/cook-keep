@@ -127,11 +127,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# ログインをアドレスとパスワードで行うためのもの
-AUTHENTICATION_BACKENDS = [
-    "accounts.authentication.EmailAuthBackend",  # カスタム認証バックエンドのパス
-    "django.contrib.auth.backends.ModelBackend",  # Djangoのデフォルトの認証バックエンド
-]
+# # ログインをアドレスとパスワードで行うためのもの
+# AUTHENTICATION_BACKENDS = [
+#     "accounts.authentication.EmailAuthBackend",  # カスタム認証バックエンドのパス
+#     "django.contrib.auth.backends.ModelBackend",  # Djangoのデフォルトの認証バックエンド
+# ]
 
 
 # Internationalization

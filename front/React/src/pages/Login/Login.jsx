@@ -35,18 +35,16 @@ export const Login = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにログインリクエストを送信
-                const response = await axios.get( `${domainEndpoint}/${loginEndpoint}`, {
-                    params: {
-                        username: formValues.username,
-                        password: formValues.password
-                    }
+                const response = await axios.post( `${domainEndpoint}/${loginEndpoint}`, {
+                    username: formValues.username,
+                    password: formValues.password
                 });
                 // 認証成功の処理（ユーザーが見つかった場合）
-                if (response.data.length > 0) {
+                if (response.data.token) {
                     // ログインユーザー情報をグローバルに保持する
-                    setCurrentUser(response.data[0]);
+                    setCurrentUser(response.data.token);
                     // レシピ一覧ページへリダイレクト
-                    navigate('/recipes'); 
+                    navigate('/recipes');
                 } else {
                     // ログイン失敗のエラーをセット
                     setFormErrors({ ...formErrors, submit: 'ログイン情報が正しくありません' });
