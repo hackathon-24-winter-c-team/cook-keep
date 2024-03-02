@@ -74,8 +74,10 @@
 }
 
 .imageUrl {
-    background-color: rgb(202, 200, 200);
-    width: 90%;
+/*     background-color: rgb(202, 200, 200);
+ */
+
+     width: 90%;
     border-radius: 4px;
     justify-content: center;
     text-align: center;
