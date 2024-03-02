@@ -32,8 +32,8 @@ export const RecipeList = () => {
             // currentUserがnullでないことを確認する
             if (currentUser) {
                 try {
-                    const response = await axios.get(`${domainEndpoint}${recipesEndpoint}`,{
-                        headers: {Authorization: `Token ${currentUser}`},
+                    const response = await axios.get(`${domainEndpoint}${recipesEndpoint}`, {
+                        headers: { Authorization: `Token ${currentUser}` },
                         data: {}
                     });
                     console.log(response.data);
@@ -44,34 +44,34 @@ export const RecipeList = () => {
             }
         }
         fetchRecipes();
-    },[currentUser, setRecipes]);
+    }, [currentUser, setRecipes]);
 
     useEffect(() => {
         let results = searchTerm
-            ? recipes.filter(recipe => 
+            ? recipes.filter(recipe =>
                 hiraganaToKatakana(recipe.recipe_name).includes(hiraganaToKatakana(searchTerm))
             )
-            : recipes; 
+            : recipes;
 
         // タグによる検索を追加
         if (searchTag.length > 0) {
-            results = results.filter(recipe => 
+            results = results.filter(recipe =>
                 searchTag.every(tag =>
                     tag === recipe.main_tag ||
                     tag === recipe.genre_tag ||
                     (tag === "jitan" && recipe.jitan_tag)
-                    )
+                )
             )
         }
         setFilteredRecipes(results);
-    },[searchTerm, recipes, searchTag]);
+    }, [searchTerm, recipes, searchTag]);
 
     // ひらがなをカタカナに変換する関数
     const hiraganaToKatakana = (str) => {
         return str.replace(/[\u3041-\u3096]/g, match =>
-          String.fromCharCode(match.charCodeAt(0) + 0x60)
+            String.fromCharCode(match.charCodeAt(0) + 0x60)
         );
-      };
+    };
 
     // タグが選択されたときに実行される関数
     const handleTagsChange = (selectedTags) => {
@@ -91,18 +91,18 @@ export const RecipeList = () => {
 
     const navigate = useNavigate();
 
-   /*   レシピ詳細ページへ遷移する関数 1はレシピIDに変更する必要アリ
-    const handleDetailClick = () => {
-        navigate('/recipes/1');
-    }; */
+    /*   レシピ詳細ページへ遷移する関数 1はレシピIDに変更する必要アリ
+     const handleDetailClick = () => {
+         navigate('/recipes/1');
+     }; */
 
     // ログインしていなかったらログインページへ画面遷移
     React.useEffect(() => {
         if (!currentUser) {
             navigate('/');
         }
-    },[currentUser, navigate]); // 依存配列を定義、この値が変更された時のみログインページに遷移する
-    
+    }, [currentUser, navigate]); // 依存配列を定義、この値が変更された時のみログインページに遷移する
+
     // ログアウトする関数
     const handleLogout = () => {
         setCurrentUser(null); // ユーザーの状態をnullにする
@@ -112,20 +112,20 @@ export const RecipeList = () => {
     return (
         <>
             <div className={styles.header}>
-                <ul>
-                    <AccountCircleIcon className={styles.userIcon} fontSize='large' onClick={handleOpenUserModal}/>
+                <ul className={styles.listUl}>
+                    <AccountCircleIcon className={styles.userIcon} fontSize='large' onClick={handleOpenUserModal} />
                     {userModalOpen && <UserInfoModal open={userModalOpen} setOpen={setUserModalOpen} />}
                     <SearchBar value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-                    <LogoutIcon className={styles.logoutIcon} onClick={handleLogout}/>
+                    <LogoutIcon className={styles.logoutIcon} onClick={handleLogout} />
                 </ul>
             </div>
-            
+
             <div>
-                <TagSelect onTagsChange={(handleTagsChange)}/>
+                <TagSelect onTagsChange={(handleTagsChange)} />
             </div>
-            <Box>
+            <Box sx={{justifyContent: 'center'}}>
                 {filteredRecipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
+                    <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
             </Box>
             <div>

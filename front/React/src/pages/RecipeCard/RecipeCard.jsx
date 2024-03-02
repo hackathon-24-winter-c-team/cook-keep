@@ -3,7 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Box, CardActionArea } from '@mui/material';
+import { Box, CardActionArea, useMediaQuery } from '@mui/material';
 import PropTypes from 'prop-types';
 import { Link, useNavigate } from 'react-router-dom';
 import rice from '../../../public/rice.png';
@@ -95,7 +95,13 @@ export const RecipeCard = ({ recipe }) => {
     //画像イメージ一覧
 
     return (
-        <Box sx={{ display: 'inline-flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+        <Box sx={{
+            display: 'inline-flex',
+            "@media screen and (max-width:500px)": {
+                display: 'flex',
+                justifyContent: 'center',
+            },
+        }}>
             <Card sx={{ maxWidth: 300, maxHeight: 300, m: '10px' }}>
                 <CardActionArea sx={{ justifyContent: 'center' }}>
                     <Box sx={{ height: '50%', display: 'inline-flex', borderBottom: 1, borderColor: 'grey.300' }} onClick={handleDetailClick}>
@@ -139,18 +145,17 @@ export const RecipeCard = ({ recipe }) => {
 
 RecipeCard.propTypes = {
     recipe: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      user_id: PropTypes.string,
-      recipe_name: PropTypes.string,
-      data_url: PropTypes.string,
-      memo: PropTypes.string,
-      image_1: PropTypes.string,  // 画像URLが文字列であることを想定しています。nullも許容します。
-      image_2: PropTypes.string,
-      image_3: PropTypes.string,
-      main_tag: PropTypes.string,
-      genre_tag: PropTypes.string,
-      jitan_tag: PropTypes.bool,  // trueまたはfalseが期待されるため、bool型を指定します。
+        id: PropTypes.string.isRequired,
+        user_id: PropTypes.string,
+        recipe_name: PropTypes.string,
+        data_url: PropTypes.string,
+        memo: PropTypes.string,
+        image_1: PropTypes.string,  // 画像URLが文字列であることを想定しています。nullも許容します。
+        image_2: PropTypes.string,
+        image_3: PropTypes.string,
+        main_tag: PropTypes.string,
+        genre_tag: PropTypes.string,
+        jitan_tag: PropTypes.bool,  // trueまたはfalseが期待されるため、bool型を指定します。
     }),
     recipeDetail: PropTypes.func
-  };
-  
+};
