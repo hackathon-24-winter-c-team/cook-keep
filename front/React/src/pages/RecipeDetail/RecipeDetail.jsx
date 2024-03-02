@@ -210,9 +210,9 @@ export const RecipeDetail = () => {
                     </FormControl>
                 </div>
                 <div className={styles.imageUrl}>
-                    {recipeDetailInfo.image_1 && <img className='image' src={recipeDetailInfo.image_1} alt="error" />}
-                    {recipeDetailInfo.image_2 && <img className='image' src={recipeDetailInfo.image_2} alt="error" />}
-                    {recipeDetailInfo.image_3 && <img className='image' src={recipeDetailInfo.image_3} alt="error" />}
+                    {recipeDetailInfo.image_1 && <img className={styles.image} src={recipeDetailInfo.image_1} alt="error" />}
+                    {recipeDetailInfo.image_2 && <img className={styles.image} src={recipeDetailInfo.image_2} alt="error" />}
+                    {recipeDetailInfo.image_3 && <img className={styles.image} src={recipeDetailInfo.image_3} alt="error" />}
                 </div>
                 <div className={styles.memo}>
                     <TextField
