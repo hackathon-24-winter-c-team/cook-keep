@@ -159,12 +159,12 @@ export const RecipeDetail = () => {
                     />
                 </div>
                 <div className={styles.url}>
-                    {recipeDetailInfo.data_url && <Typography gutterBottom variant="h6" component="div" sx={{ width: "90%", borderBottom: 1, borderColor: 'grey.500', mb: 2, textAlign: "center", justifyContent: 'center' }} >
-                        <Link target="_blank" to={recipeDetailInfo.data_url} sx={{  }}>{urlLength}</Link>
+                    {recipeDetailInfo.data_url && <Typography gutterBottom variant="h6" component="div" sx={{ width: "90%", borderBottom: 1, borderColor: 'grey.500', mb: 2, textAlign: "center", display: 'flex', justifyContent: 'center' }} >
+                        <Link target="_blank" to={recipeDetailInfo.data_url} sx={{ justifyContent: 'center' }}>{urlLength}</Link>
                     </Typography>}
                 </div>
                 <div className={styles.TextField}>
-                    <TextField id='recipeId' placeholder={recipeDetailInfo.recipe_name}></TextField>
+                    <TextField id='recipeId' label='名前' defaultValue={recipeDetailInfo.recipe_name} sx={{justifyContent: 'center' }}></TextField>
                 </div>
                 <div className={styles.tagGroup}>
                     <FormControl >
@@ -220,7 +220,7 @@ export const RecipeDetail = () => {
                         label="メモ"
                         multiline
                         rows={6}
-                        defaultValue={recipeDetailInfo.memo}>{recipeDetailInfo.memo}</TextField>
+                        defaultValue={recipeDetailInfo.memo}></TextField>
                 </div>
                 <div className={styles.saveButton}>
                     <Button >保存</Button>
