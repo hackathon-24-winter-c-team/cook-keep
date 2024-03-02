@@ -45,7 +45,7 @@ export const UserInfoModal = ({ open, setOpen }) => {
     if (isConfirmed) {
       try {
         // ユーザーがOKをクリックしたら登録解除する
-        const response = await fetch(`${domainEndpoint}/${loginEndpoint}/${currentUser.id}`, { method: 'DELETE' });
+        const response = await fetch(`${domainEndpoint}${loginEndpoint}${currentUser.id}`, { method: 'DELETE' });
         if (response.ok) {
           console.log('登録が解除されました')
           // ここで状態を更新するか、ページをリフレッシュする

@@ -32,7 +32,7 @@ export const Signup = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにPOSTリクエストを送信
-                const response = await axios.post(`${domainEndpoint}/${signupEndpoint}`, {
+                const response = await axios.post(`${domainEndpoint}${signupEndpoint}`, {
                     username: formValues.username,
                     email: formValues.mailAddress,
                     password: formValues.password // 本来はパスワードをそのまま保存しない
