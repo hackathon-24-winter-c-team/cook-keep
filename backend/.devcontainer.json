@@ -1,0 +1,6 @@
+{
+  "name": "Django",
+  "dockerComposeFile": ["../docker-compose.yml"],
+  "service": "backend",
+  "workspaceFolder": "/django_app"
+}
