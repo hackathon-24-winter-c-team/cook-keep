@@ -155,23 +155,22 @@ export const RecipeRegistModal = ({ open, setOpen }) => {
     // エラーがない場合、登録成功のアラートを表示し、リダイレクトを実行
     if (Object.keys(errors).length === 0) {
         try {
-            // 画像が存在する場合にアップロード 
-            // const imageUrls = await uploadImagesAndGetUrls();
-
-            const recipeData = {
-              user_id: currentUser.id,
-              recipe_name: recipeValues.recipename,
-              data_url: recipeValues.recipeurl,
-              memo: recipeValues.memo,
-              // image_1: imageUrls[0],
-              // image_2: imageUrls[1],
-              // image_3: imageUrls[2],
-              main_tag: recipeValues.main_tag,
-              genre_tag: recipeValues.genre_tag,
-              jitan_tag: recipeValues.jitan_tag
-            }
+          const formData = new FormData(); // FormDataインスタンスの作成
+          formData.append('user_id', currentUser.id);
+          formData.append('recipe_name', recipeValues.recipename);
+          formData.append('data_url', recipeValues.recipeurl);
+          formData.append('memo', recipeValues.memo);
+          formData.append('main_tag', recipeValues.main_tag);
+          formData.append('genre_tag', recipeValues.genre_tag);
+          formData.append('jitan_tag', recipeValues.jitan_tag);
+    
+          // 画像データをFormDataに追加
+          images.forEach((image, index) => {
+            formData.append(`image_${index + 1}`, image);
+          });
+    
              // json-serverにPOSTリクエストを送信
-            const response = await axios.post(`${domainEndpoint}${recipeEndpoint}`, recipeData, {
+            const response = await axios.post(`${domainEndpoint}${recipeEndpoint}`, formData, {
               headers: {Authorization: `Token ${currentUser}`}
             });
             setRecipesState(oldRecipes => [...oldRecipes, response.data]);
