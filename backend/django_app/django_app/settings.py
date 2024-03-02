@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-)qq6x&kh)$(nx*n6@c@4_v!ko7$1)82+lj^&&7!$83*fj-no@*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cook-keep.com','alb.cook-keep.com']
 
 
 # Application definition
@@ -165,7 +165,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = "accounts.User"
 
 # CORS 設定
-CORS_ORIGIN_WHITELIST = ["http://localhost:5173"]
+CORS_ORIGIN_WHITELIST = []
 
 # AWS S3 Setting
 # Waring 認証情報はリポジトリに上げないように
