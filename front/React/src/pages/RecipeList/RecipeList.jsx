@@ -16,6 +16,7 @@ import axios from 'axios';
 /* import { dbEndpoint } from '../../api/endpoint/dbEndpoint';
  */import { domainEndpoint } from '../../api/endpoint/domainEndpoint';
 import { recipesEndpoint } from '../../api/endpoint/recipesEndpoint';
+import { Box } from '@mui/material';
 
 // レシピ一覧の主要コンポーネント
 export const RecipeList = () => {
@@ -31,7 +32,7 @@ export const RecipeList = () => {
             // currentUserがnullでないことを確認する
             if (currentUser) {
                 try {
-                    const response = await axios.get(`${domainEndpoint}/${recipesEndpoint}`,{
+                    const response = await axios.get(`${domainEndpoint}${recipesEndpoint}`,{
                         headers: {Authorization: `Token ${currentUser}`},
                         data: {}
                     });
@@ -122,11 +123,11 @@ export const RecipeList = () => {
             <div>
                 <TagSelect onTagsChange={(handleTagsChange)}/>
             </div>
-            <div>
+            <Box>
                 {filteredRecipes.map((recipe) => (
                 <RecipeCard key={recipe.id} recipe={recipe} />
                 ))}
-            </div>
+            </Box>
             <div>
                 <AddCircleIcon
                     className={styles.newRecipeIcon}

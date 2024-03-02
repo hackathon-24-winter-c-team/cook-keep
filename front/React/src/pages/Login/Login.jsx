@@ -35,7 +35,7 @@ export const Login = () => {
         if (Object.keys(errors).length === 0) {
             try {
                 // json-serverにログインリクエストを送信
-                const response = await axios.post( `${domainEndpoint}/${loginEndpoint}`, {
+                const response = await axios.post( `${domainEndpoint}${loginEndpoint}`, {
                     username: formValues.username,
                     password: formValues.password
                 });
